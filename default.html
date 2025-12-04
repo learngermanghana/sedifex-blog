@@ -3,8 +3,52 @@
   <head>
     <meta charset="utf-8" />
     <title>{{ page.title }} — {{ site.title }}</title>
+    {% assign meta_description = page.description | default: page.excerpt | strip_html | strip_newlines | truncate: 160 | default: site.description %}
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="{{ page.description | default: site.description }}" />
+    <meta name="description" content="{{ meta_description }}" />
+    {% if page.author or site.author %}
+    <meta name="author" content="{{ page.author | default: site.author }}" />
+    {% endif %}
+    <meta name="robots" content="index,follow" />
+    {% assign canonical_url = page.url | absolute_url %}
+    <link rel="canonical" href="{{ canonical_url }}" />
+    <meta property="og:title" content="{{ page.title }}" />
+    <meta property="og:description" content="{{ meta_description }}" />
+    <meta property="og:type" content="{% if page.layout == 'post' or page.collection == 'posts' %}article{% else %}website{% endif %}" />
+    <meta property="og:url" content="{{ canonical_url }}" />
+    <meta property="og:site_name" content="{{ site.title }}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="{{ page.title }}" />
+    <meta name="twitter:description" content="{{ meta_description }}" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        {% if page.layout == 'post' or page.collection == 'posts' %}
+        "@type": "BlogPosting",
+        "headline": {{ page.title | jsonify }},
+        "description": {{ meta_description | jsonify }},
+        "datePublished": "{{ page.date | date_to_xmlschema }}",
+        "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+        "author": {
+          "@type": "Organization",
+          "name": {{ site.title | jsonify }}
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": {{ site.title | jsonify }}
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": {{ canonical_url | jsonify }}
+        }
+        {% else %}
+        "@type": "WebSite",
+        "name": {{ site.title | jsonify }},
+        "description": {{ meta_description | jsonify }},
+        "url": {{ canonical_url | jsonify }}
+        {% endif %}
+      }
+    </script>
     <style>
       body {
         margin: 0;
