@@ -50,32 +50,85 @@
       }
     </script>
     <style>
+      :root {
+        --bg: #0b1727;
+        --card: rgba(255, 255, 255, 0.94);
+        --primary: #5b8def;
+        --primary-strong: #3b6edb;
+        --text: #0f172a;
+        --muted: #5b6476;
+        --border: rgba(255, 255, 255, 0.16);
+        --glow: 0 20px 80px rgba(43, 104, 255, 0.18);
+      }
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+      * { box-sizing: border-box; }
       body {
         margin: 0;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
-        background: #f9fafb;
-        color: #111827;
+        font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: radial-gradient(circle at 15% 20%, rgba(90, 139, 255, 0.12), transparent 25%),
+          radial-gradient(circle at 80% 0%, rgba(125, 243, 255, 0.12), transparent 30%),
+          var(--bg);
+        color: var(--text);
+        min-height: 100vh;
       }
-      a { color: #2563eb; text-decoration: none; }
-      a:hover { text-decoration: underline; }
-      .page { max-width: 960px; margin: 0 auto; padding: 24px 16px 40px; }
+      a { color: var(--primary); text-decoration: none; transition: color 180ms ease, transform 180ms ease; }
+      a:hover { color: var(--primary-strong); transform: translateY(-1px); }
+      .page {
+        max-width: 1040px; margin: 0 auto; padding: 32px 18px 56px;
+      }
+      .glass-card {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.93));
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 18px;
+        box-shadow: var(--glow), 0 12px 45px rgba(15, 23, 42, 0.2);
+        backdrop-filter: blur(14px);
+      }
       header {
         display: flex; justify-content: space-between; align-items: center;
-        margin-bottom: 24px;
+        padding: 18px 20px; margin-bottom: 26px; position: sticky; top: 0; z-index: 10;
+        background: linear-gradient(180deg, rgba(11, 23, 39, 0.92), rgba(11, 23, 39, 0.7));
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
+        backdrop-filter: blur(10px);
       }
-      .brand { font-size: 14px; letter-spacing: .12em; text-transform: uppercase;
-        color: #2563eb; font-weight: 600; }
-      .site-title { font-size: 24px; font-weight: 700; margin: 4px 0 0; }
-      nav a { margin-left: 16px; font-size: 14px; color: #6b7280; }
+      .brand { font-size: 13px; letter-spacing: .16em; text-transform: uppercase;
+        color: #cde0ff; font-weight: 700; }
+      .site-title { font-size: 24px; font-weight: 700; margin: 4px 0 0; color: #f8fbff; }
+      nav a {
+        margin-left: 10px; font-size: 14px; color: #dbe7ff; padding: 8px 12px;
+        border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.04); transition: all 180ms ease;
+      }
+      nav a:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); }
+      .content-shell { padding: 0 6px; }
       footer {
-        border-top: 1px solid #e5e7eb; margin-top: 32px; padding-top: 12px;
-        font-size: 11px; color: #6b7280;
+        margin-top: 36px; padding-top: 18px;
+        font-size: 12px; color: #cbd5f5; text-align: center;
       }
-      footer p { margin: 4px 0; }
-      @media (max-width: 600px) {
-        header { flex-direction: column; align-items: flex-start; gap: 6px; }
-        nav { margin-top: 4px; }
+      footer p { margin: 6px 0; }
+      .cta-button {
+        display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px;
+        border-radius: 14px; background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+        color: #fff; font-weight: 600; box-shadow: 0 10px 30px rgba(59, 110, 219, 0.35);
+      }
+      .pill {
+        display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px;
+        border-radius: 999px; background: rgba(91, 141, 239, 0.12);
+        color: var(--primary-strong); font-weight: 600; font-size: 13px;
+      }
+      .meta {
+        font-size: 12px; color: var(--muted); text-transform: uppercase;
+        letter-spacing: 0.08em; font-weight: 600;
+      }
+      .card-title { margin: 0 0 8px; font-size: 22px; line-height: 1.3; color: var(--text); }
+      .card-description { color: #1f2937; font-size: 15px; margin: 0; line-height: 1.6; }
+      .muted { color: var(--muted); }
+      @media (max-width: 720px) {
+        header { flex-direction: column; align-items: flex-start; gap: 10px; position: static; }
+        nav { width: 100%; display: flex; gap: 8px; padding-top: 4px; }
+        nav a { flex: 1; text-align: center; margin-left: 0; }
+        .page { padding: 22px 14px 40px; }
       }
     </style>
   </head>
@@ -93,12 +146,14 @@
         </nav>
       </header>
 
-      {{ content }}
+      <div class="content-shell">
+        {{ content }}
 
-      <footer>
-        <p>© {{ site.time | date: "%Y" }} Sedifex · Kwamisa Street GA 5808547, Awoshie · Ghana</p>
-        <p>Updates on the Ghana market and stories from Sedifex stores.</p>
-      </footer>
+        <footer>
+          <p>© {{ site.time | date: "%Y" }} Sedifex · Kwamisa Street GA 5808547, Awoshie · Ghana</p>
+          <p>Updates on the Ghana market and stories from Sedifex stores.</p>
+        </footer>
+      </div>
     </div>
   </body>
 </html>
