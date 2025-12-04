@@ -1,0 +1,19 @@
+title: "Sedifex Blog"
+description: "Updates about the Ghana market and Sedifex stores."
+baseurl: ""          # keep empty since it's a custom domain
+url: "https://blog.sedifex.com"
+
+theme: minima        # simple built-in theme we can override later
+
+plugins:
+  - jekyll-paginate  # works on GitHub Pages
+
+paginate: 5          # posts per page
+paginate_path: "/page:num"
+
+# So GitHub Pages doesn't try to build node_modules etc.
+exclude:
+  - README.md
+  - node_modules
+  - package.json
+  - package-lock.json
