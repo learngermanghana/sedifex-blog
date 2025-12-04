@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ page.title }} — {{ site.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="{{ page.description | default: site.description }}" />
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #f9fafb;
+        color: #111827;
+      }
+      a { color: #2563eb; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .page { max-width: 960px; margin: 0 auto; padding: 24px 16px 40px; }
+      header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 24px;
+      }
+      .brand { font-size: 14px; letter-spacing: .12em; text-transform: uppercase;
+        color: #2563eb; font-weight: 600; }
+      .site-title { font-size: 24px; font-weight: 700; margin: 4px 0 0; }
+      nav a { margin-left: 16px; font-size: 14px; color: #6b7280; }
+      footer {
+        border-top: 1px solid #e5e7eb; margin-top: 32px; padding-top: 12px;
+        font-size: 11px; color: #6b7280;
+      }
+      footer p { margin: 4px 0; }
+      @media (max-width: 600px) {
+        header { flex-direction: column; align-items: flex-start; gap: 6px; }
+        nav { margin-top: 4px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div>
+          <div class="brand">Sedifex</div>
+          <div class="site-title">{{ site.title }}</div>
+        </div>
+        <nav>
+          <a href="{{ '/' | relative_url }}">Home</a>
+          <a href="{{ '/about-sedifex/' | relative_url }}">What is Sedifex?</a>
+          <a href="https://www.sedifex.com" target="_blank">Sedifex app</a>
+        </nav>
+      </header>
+
+      {{ content }}
+
+      <footer>
+        <p>© {{ site.time | date: "%Y" }} Sedifex · Kwamisa Street GA 5808547, Awoshie · Ghana</p>
+        <p>Updates on the Ghana market and stories from Sedifex stores.</p>
+      </footer>
+    </div>
+  </body>
+</html>
