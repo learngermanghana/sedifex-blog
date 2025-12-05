@@ -1,6 +1,8 @@
 title: "Sedifex Blog"
 description: "Updates about the Ghana market and Sedifex stores."
 baseurl: ""          # keep empty since it's a custom domain
+og_image: "/assets/og-default.png"
+og_image_alt: "Sedifex gradient logo on a midnight blue background"
 url: "https://blog.sedifex.com"
 
 theme: minima        # simple built-in theme we can override later
