@@ -1,0 +1,243 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  --bg: #0b1727;
+  --card: rgba(255, 255, 255, 0.94);
+  --primary: #5b8def;
+  --primary-strong: #3b6edb;
+  --text: #0f172a;
+  --muted: #5b6476;
+  --border: rgba(255, 255, 255, 0.16);
+  --glow: 0 20px 80px rgba(43, 104, 255, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at 15% 20%, rgba(90, 139, 255, 0.12), transparent 25%),
+    radial-gradient(circle at 80% 0%, rgba(125, 243, 255, 0.12), transparent 30%),
+    var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+a {
+  color: var(--primary-strong);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary);
+}
+
+main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 18px 40px;
+}
+
+.glass-card {
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: var(--glow);
+}
+
+.card-padding-large {
+  padding: 28px 26px 22px;
+  margin-bottom: 22px;
+}
+
+.card-padding-medium {
+  padding: 24px 22px 26px;
+  margin-bottom: 16px;
+}
+
+.card-padding-post {
+  padding: 24px 22px 28px;
+}
+
+.card-padding-compact {
+  padding: 18px 20px 12px;
+  margin-bottom: 12px;
+}
+
+.card-padding-section {
+  padding: 20px 18px;
+  margin-bottom: 16px;
+}
+
+.card-padding-stack {
+  padding: 20px 18px;
+}
+
+.card-title {
+  margin: 0;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.title-lg {
+  font-size: 30px;
+  margin-top: 10px;
+  margin-bottom: 12px;
+}
+
+.title-md {
+  font-size: 28px;
+  margin-top: 10px;
+}
+
+.title-sm {
+  font-size: 19px;
+  margin: 0 0 6px;
+}
+
+.heading-secondary {
+  margin: 0;
+  color: var(--text);
+}
+
+.card-description {
+  margin: 0;
+  color: #1f2937;
+  line-height: 1.7;
+}
+
+.meta {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.muted {
+  margin: 0;
+  color: var(--muted);
+}
+
+.pill {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(91, 141, 239, 0.12);
+  color: var(--primary-strong);
+  font-weight: 600;
+  border: 1px solid rgba(91, 141, 239, 0.3);
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  box-shadow: var(--glow);
+}
+
+.cta-button:hover {
+  background: var(--primary-strong);
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.post-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  padding: 16px 16px 18px;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+.post-link {
+  color: var(--text);
+}
+
+.post-link:hover {
+  color: var(--primary-strong);
+}
+
+.pagination {
+  margin-top: 10px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.pagination .meta {
+  margin: 0 8px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.feature-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  padding: 14px 14px 16px;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+
+.feature-card .meta {
+  margin-bottom: 6px;
+}
+
+.feature-card h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.feature-card .card-description {
+  margin: 0;
+}
+
+.feature-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #1f2937;
+  line-height: 1.7;
+}
+
+.post-content {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #0f172a;
+}
+
+.mb-0 { margin-bottom: 0; }
+.mb-6 { margin-bottom: 6px; }
+.mb-8 { margin-bottom: 8px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-14 { margin-bottom: 14px; }
+.mb-16 { margin-bottom: 16px; }
+
+.mt-0 { margin-top: 0; }
+.mt-10 { margin-top: 10px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }

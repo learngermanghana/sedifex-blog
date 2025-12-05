@@ -38,6 +38,7 @@
     {% endif %}
     <meta name="twitter:title" content="{{ page.title }}" />
     <meta name="twitter:description" content="{{ meta_description }}" />
+    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -84,25 +85,3 @@
         {% endif %}
       }
     </script>
-    <style>
-      :root {
-        --bg: #0b1727;
-        --card: rgba(255, 255, 255, 0.94);
-        --primary: #5b8def;
-        --primary-strong: #3b6edb;
-        --text: #0f172a;
-        --muted: #5b6476;
-        --border: rgba(255, 255, 255, 0.16);
-        --glow: 0 20px 80px rgba(43, 104, 255, 0.18);
-      }
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-        background: radial-gradient(circle at 15% 20%, rgba(90, 139, 255, 0.12), transparent 25%),
-          radial-gradient(circle at 80% 0%, rgba(125, 243, 255, 0.12), transparent 30%),
-          var(--bg);
-        color: var(--text);
-        min-height: 100vh;
-      }

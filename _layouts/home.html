@@ -2,58 +2,54 @@
 layout: default
 ---
 
-<section aria-labelledby="intro-heading" class="glass-card" style="padding: 28px 26px 22px; margin-bottom: 22px; border: 1px solid rgba(255,255,255,0.28);">
+<section aria-labelledby="intro-heading" class="glass-card card-padding-large">
   <div class="pill" aria-hidden="true">Sedifex Blog</div>
-  <h1 id="intro-heading" class="card-title" style="font-size: 28px; margin-top: 10px;">
-    Growth tips for Ghanaian shop owners and Sedifex partners
-  </h1>
-  <p class="card-description" style="margin-bottom: 12px;">
+  <h1 id="intro-heading" class="card-title title-md">Growth tips for Ghanaian shop owners and Sedifex partners</h1>
+  <p class="card-description mb-12">
     Practical advice on inventory, payments, and marketing to help small businesses thrive in Ghana's retail market.
   </p>
-  <p class="muted" style="margin: 0 0 14px;">
+  <p class="muted mb-14">
     Follow along for concise updates from Sedifex, product news, and real stories from shopkeepers across Accra.
   </p>
-  <div style="display:flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+  <div class="action-row">
     <a class="cta-button" href="{{ '/about-sedifex/' | relative_url }}">About Sedifex</a>
     <span class="meta">Built for modern African retail</span>
   </div>
 </section>
 
-<div class="glass-card" style="padding: 18px 20px 12px; border: 1px solid rgba(255,255,255,0.28); margin-bottom: 12px;">
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+<div class="glass-card card-padding-compact">
+  <div class="flex-between mb-10">
     <div>
-      <p class="meta" style="margin: 0 0 6px;">Editorial picks</p>
-      <h2 style="margin: 0; color: #0b1727;">Latest posts</h2>
+      <p class="meta mb-6">Editorial picks</p>
+      <h2 class="heading-secondary">Latest posts</h2>
     </div>
     <span class="pill">Fresh insights weekly</span>
   </div>
 
   {% for post in paginator.posts %}
-    <article style="background:#fff;border-radius:14px;border:1px solid rgba(15,23,42,0.05);padding:16px 16px 18px;margin-bottom:12px; box-shadow: 0 8px 20px rgba(15,23,42,0.08);">
-      <h3 style="margin:0 0 6px;font-size:19px;">
-        <a href="{{ post.url | relative_url }}" style="color: var(--text);">{{ post.title }}</a>
+    <article class="post-card">
+      <h3 class="title-sm">
+        <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
       </h3>
-      <div class="meta" style="margin-bottom:10px;">
+      <div class="meta mb-10">
         {{ post.date | date: "%d %b %Y" }}
         {% if post.category %} · {{ post.category }}{% endif %}
       </div>
-      <p class="card-description" style="margin:0;">
+      <p class="card-description mb-0">
         {{ post.excerpt | strip_html | truncate: 150 }}
       </p>
     </article>
   {% endfor %}
 
   {% if paginator.total_pages > 1 %}
-    <nav aria-label="Pagination" style="margin-top:10px;font-size:14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: space-between;">
+    <nav aria-label="Pagination" class="pagination">
       <div>
         {% if paginator.previous_page %}
           <a class="pill" href="{{ paginator.previous_page_path | relative_url }}">&larr; Newer posts</a>
         {% endif %}
       </div>
 
-      <span class="meta" style="margin:0 8px;">
-        Page {{ paginator.page }} of {{ paginator.total_pages }}
-      </span>
+      <span class="meta">Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
 
       <div>
         {% if paginator.next_page %}
