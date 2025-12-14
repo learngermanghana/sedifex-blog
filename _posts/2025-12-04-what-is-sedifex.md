@@ -4,6 +4,8 @@ title: "What is Sedifex?"
 category: "Product story"
 ---
 
+![Sedifex](https://github.com/learngermanghana/sedifex-blog/blob/main/photos/Untitled%281%29.jpg?raw=1)
+
 Sedifex was created to solve a simple but painful problem in Ghana’s buy-and-sell
 market: business owners work hard every day, but many never really see their
 numbers. Sales are written in books, expenses are in someone’s head, and
