@@ -46,6 +46,118 @@ main {
   padding: 40px 18px 48px;
 }
 
+.hero {
+  overflow: hidden;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  align-items: center;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.ghost-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(124, 93, 255, 0.36);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text);
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.ghost-button::after {
+  content: "→";
+  font-weight: 700;
+}
+
+.ghost-button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(124, 93, 255, 0.6);
+  box-shadow: 0 14px 30px rgba(7, 13, 33, 0.16);
+}
+
+.hero-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.meta-chip {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(124, 93, 255, 0.2);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 28px rgba(7, 13, 33, 0.1);
+  display: grid;
+  gap: 4px;
+}
+
+.meta-label {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.hero-visual {
+  position: relative;
+  min-height: 260px;
+  display: grid;
+  gap: 12px;
+}
+
+.hero-image {
+  border-radius: 16px;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(124, 93, 255, 0.25);
+  box-shadow: 0 18px 40px rgba(7, 13, 33, 0.16);
+}
+
+.hero-image.primary {
+  height: 210px;
+  background-image: linear-gradient(135deg, rgba(108, 212, 255, 0.32), rgba(124, 93, 255, 0.26)),
+    url('https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=1200&q=80');
+}
+
+.hero-image.secondary {
+  height: 120px;
+  width: 70%;
+  justify-self: end;
+  background-image: linear-gradient(135deg, rgba(255, 140, 207, 0.3), rgba(108, 212, 255, 0.22)),
+    url('https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=900&q=80');
+}
+
+.hero-annotation {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  padding: 10px 12px;
+  background: rgba(5, 9, 20, 0.78);
+  color: #f8fafc;
+  border-radius: 10px;
+  font-size: 13px;
+  box-shadow: 0 12px 28px rgba(7, 13, 33, 0.22);
+}
+
 .glass-card {
   position: relative;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
@@ -265,6 +377,91 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 12px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.feature-tile {
+  background: #ffffff;
+  border: 1px solid rgba(10, 16, 32, 0.06);
+  border-radius: 16px;
+  padding: 18px 18px 20px;
+  box-shadow: 0 14px 32px rgba(7, 13, 33, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.tile-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(124, 93, 255, 0.12);
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.feature-tile h3 {
+  margin: 0 0 8px;
+}
+
+.feature-tile p {
+  margin: 0 0 12px;
+  color: #1b2234;
+}
+
+.tile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, rgba(108, 212, 255, 0.2), rgba(124, 93, 255, 0.16));
+  color: var(--text);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.topic-card {
+  background: #0a1020;
+  color: #e8edff;
+  border-radius: 16px;
+  padding: 18px 18px 20px;
+  border: 1px solid rgba(108, 212, 255, 0.22);
+  background-image: radial-gradient(circle at 20% 20%, rgba(108, 212, 255, 0.12), transparent 32%),
+    radial-gradient(circle at 80% 0%, rgba(255, 140, 207, 0.12), transparent 38%);
+  box-shadow: 0 14px 30px rgba(7, 13, 33, 0.4);
+}
+
+.topic-card h3 {
+  margin: 0 0 10px;
+  color: #ffffff;
+}
+
+.topic-card .muted {
+  color: #c6d0f0;
+  margin-bottom: 12px;
+}
+
+.inline-link {
+  color: #b8d8ff;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.inline-link:hover {
+  color: var(--primary);
 }
 
 .feature-card {
