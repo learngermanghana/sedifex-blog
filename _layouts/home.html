@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Falowen Blog</title>
+  <title>{{ site.title }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   {%- include head.html -%}
   {%- include head-custom.html -%}
@@ -10,15 +10,6 @@
 </head>
 <body>
   {% include header.html %}
-
-  <!-- Student reviews (moved to top) -->
-  <section id="testimonials" class="wrap section">
-    <h2>What students say</h2>
-    <div class="reviews-container">
-      <p>Loading testimonials...</p>
-    </div>
-    <noscript>Please enable JavaScript to view testimonials.</noscript>
-  </section>
 
   <!-- Hero -->
   <header class="hero">
@@ -56,7 +47,6 @@
     </div>
   </section>
 
-  <script type="module" src="{{ '/assets/js/reviews.js' | relative_url }}"></script>
   {% include footer.html %}
 </body>
 </html>
