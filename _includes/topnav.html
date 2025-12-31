@@ -1,0 +1,47 @@
+<div class="wrap topnav-container">
+  <div class="topnav-logo">
+    <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
+  </div>
+  <button class="topnav-toggle" aria-expanded="false" aria-label="Menu">&#9776;</button>
+  <nav class="topnav" aria-label="Main navigation">
+    <ul class="topnav-list">
+      <li class="{% if page.url == '/' %}active{% endif %}">
+        <a href="{{ '/' | relative_url }}">Home</a>
+      </li>
+      <li class="{% if page.url == '/about/' %}active{% endif %}">
+        <a href="{{ '/about/' | relative_url }}">About</a>
+      </li>
+      <li class="{% if page.url == '/search/' %}active{% endif %}">
+        <a href="{{ '/search/' | relative_url }}">Search</a>
+      </li>
+      <li class="{% if page.url == '/blogs/' %}active{% endif %}">
+        <a href="{{ '/blogs/' | relative_url }}">Blogs</a>
+      </li>
+      <li class="{% if page.url == '/upcoming-classes/' %}active{% endif %}">
+        <a href="{{ '/upcoming-classes/' | relative_url }}">Upcoming Classes</a>
+      </li>
+      <li class="{% if page.url == '/contact/' %}active{% endif %}">
+        <a href="{{ '/contact/' | relative_url }}">Contact</a>
+      </li>
+      <li>
+        <a href="https://register.falowen.app" target="_blank" rel="noopener">Register</a>
+      </li>
+      <li>
+        <button id="theme-toggle" type="button">Dark Mode</button>
+      </li>
+    </ul>
+  </nav>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var toggle = document.querySelector('.topnav-toggle');
+    var list = document.querySelector('.topnav-list');
+    if (toggle && list) {
+      toggle.addEventListener('click', function() {
+        var expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', (!expanded).toString());
+        list.classList.toggle('open');
+      });
+    }
+  });
+</script>

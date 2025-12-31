@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Falowen Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  {%- include head.html -%}
+  {%- include head-custom.html -%}
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+</head>
+<body>
+  {% include header.html %}
+
+  <!-- Student reviews (moved to top) -->
+  <section id="testimonials" class="wrap section">
+    <h2>What students say</h2>
+    <div class="reviews-container">
+      <p>Loading testimonials...</p>
+    </div>
+    <noscript>Please enable JavaScript to view testimonials.</noscript>
+  </section>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="wrap">
+    </div>
+  </header>
+
+  <!-- Latest posts grid -->
+  <section class="wrap section">
+    <h2>Latest articles</h2>
+    <div class="latest">
+      {% for post in site.posts limit: 3 %}
+      <article class="card">
+        <a href="{{ post.url | relative_url }}">
+          {% if post.image %}
+          <img class="post-card-img" src="{{ post.image }}" alt="{{ post.title }}" />
+          {% endif %}
+          <h3>{{ post.title }}</h3>
+          {% if post.excerpt %}
+          <p>{{ post.excerpt | strip_html | truncate: 120 }}</p>
+          {% endif %}
+        </a>
+        <div class="meta">
+          {{ post.date | date: "%b %d, %Y" }}
+          {% if post.tags %} · {{ post.tags | join: ", " }}{% endif %}
+        </div>
+        <div class="actions">
+          <a class="pill" href="{{ post.url | relative_url }}">Read</a>
+          {% if post.categories and post.categories.size > 0 %}
+            <span class="pill">{{ post.categories[0] }}</span>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <script type="module" src="{{ '/assets/js/reviews.js' | relative_url }}"></script>
+  {% include footer.html %}
+</body>
+</html>

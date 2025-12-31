@@ -1,0 +1,9 @@
+{% assign post_url = site.url | append: page.url | url_encode %}
+<div class="post-share">
+  <a href="https://www.facebook.com/sharer/sharer.php?u={{ post_url }}" target="_blank" rel="noopener">Facebook</a>
+  <a href="https://wa.me/?text={{ post_url }}" target="_blank" rel="noopener">WhatsApp</a>
+  <a href="https://twitter.com/intent/tweet?url={{ post_url }}" target="_blank" rel="noopener">Twitter</a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ post_url }}" target="_blank" rel="noopener">LinkedIn</a>
+  <a href="https://www.reddit.com/submit?url={{ post_url }}" target="_blank" rel="noopener">Reddit</a>
+  <a href="mailto:?subject={{ page.title | url_encode }}&body={{ post_url }}" target="_blank" rel="noopener">Email</a>
+</div>

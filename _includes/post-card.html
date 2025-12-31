@@ -1,0 +1,23 @@
+{% assign p = include.post %}
+<article class="post-card">
+  <a class="post-card-link" href="{{ p.url | relative_url }}">
+    {% if p.image %}
+    <img class="post-card-img"
+         src="{{ p.image }}"
+         alt="{{ p.title }}"
+         loading="lazy"
+         width="{{ p.image_width | default: 600 }}"
+         height="{{ p.image_height | default: 400 }}" />
+    {% endif %}
+    <h3 class="post-card-title">{{ p.title }}</h3>
+    {% if p.excerpt %}
+      <p class="post-card-excerpt">{{ p.excerpt | strip_html | truncate: 110 }}</p>
+    {% endif %}
+    <div class="post-card-meta">
+      <span>{{ p.date | date: "%b %d, %Y" }}</span>
+      {% if p.tags %}
+      · <span>{{ p.tags | join: ", " }}</span>
+      {% endif %}
+    </div>
+  </a>
+</article>

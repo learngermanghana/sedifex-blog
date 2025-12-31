@@ -1,0 +1,32 @@
+{% assign related_posts = '' | split: '' %}
+{% if page.tags %}
+  {% for tag in page.tags %}
+    {% assign posts = site.tags[tag] %}
+    {% if posts %}
+      {% assign related_posts = related_posts | concat: posts %}
+    {% endif %}
+  {% endfor %}
+{% elsif page.categories %}
+  {% for category in page.categories %}
+    {% assign posts = site.categories[category] %}
+    {% if posts %}
+      {% assign related_posts = related_posts | concat: posts %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+{% assign related_posts = related_posts | uniq | where_exp: 'post', 'post.url != page.url' | slice: 0, 3 %}
+{% if related_posts.size > 0 %}
+<section class="related-posts">
+  <h2>Related Posts</h2>
+  <ul>
+  {% for post in related_posts %}
+    <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+  {% endfor %}
+  </ul>
+</section>
+{% else %}
+<section class="related-posts">
+  <h2>Related Posts</h2>
+  <p>No related posts found.</p>
+</section>
+{% endif %}

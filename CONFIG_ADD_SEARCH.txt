@@ -1,0 +1,4 @@
+# Add to _config.yml if you use header_pages:
+header_pages:
+  - about.md
+  - search.md

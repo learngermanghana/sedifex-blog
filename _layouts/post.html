@@ -1,0 +1,89 @@
+---
+layout: default
+---
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {{ page.date | date: "%b %-d, %Y" }}
+      </time>
+      {%- if page.author -%}
+        • <span class="p-author h-card" itemprop="author">{{ page.author }}</span>
+      {%- endif -%}
+    </p>
+  </header>
+  {% if page.image %}
+    <img
+      src="{{ page.image }}"
+      alt="{{ page.image_alt | default: page.title }}"
+      width="{{ page.image_width | default: 600 }}"
+      height="{{ page.image_height | default: 400 }}"
+      loading="eager"
+      class="post-img">
+  {% endif %}
+
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+    {% include cta.html %}
+
+    {% include share.html %}
+
+    <nav class="post-nav">
+      {% if page.previous %}
+        <a class="prev" href="{{ page.previous.url | relative_url }}">&laquo; {{ page.previous.title }}</a>
+      {% endif %}
+    {% if page.next %}
+      <a class="next" href="{{ page.next.url | relative_url }}">{{ page.next.title }} &raquo;</a>
+    {% endif %}
+  </nav>
+
+  {% assign giscus = site.giscus %}
+  {% if giscus and giscus.enabled and giscus.repo and giscus.repo_id and giscus.category_id %}
+    <section id="comments">
+      <div id="giscus_thread"></div>
+      <script src="https://giscus.app/client.js"
+              data-repo="{{ giscus.repo }}"
+              data-repo-id="{{ giscus.repo_id }}"
+              data-category="{{ giscus.category }}"
+              data-category-id="{{ giscus.category_id }}"
+              data-mapping="pathname"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="{{ giscus.theme | default: 'light' }}"
+              data-lang="{{ giscus.lang | default: 'en' }}"
+              crossorigin="anonymous"
+              async>
+      </script>
+      <noscript>Please enable JavaScript to view the comments powered by Giscus.</noscript>
+    </section>
+  {% endif %}
+  {% include related-posts.html %}
+</article>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ page.url | absolute_url }}"
+  },
+  "headline": {{ page.title | jsonify }}{% if page.excerpt %},
+  "description": {{ page.excerpt | strip_html | strip_newlines | jsonify }}{% endif %}{% if page.image %},
+  "image": {{ page.image | absolute_url | jsonify }}{% endif %},
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}"{% if page.author %},
+  "author": {
+    "@type": "Person",
+    "name": {{ page.author | jsonify }}
+  }{% endif %},
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ site.title | jsonify }}
+  }
+}
+</script>

@@ -1,0 +1,72 @@
+/* ==== Fancy Tabs (segmented) ==== */
+.fx-tabs{
+  background: var(--card);
+  border: 1px solid var(--line); /* was var(-line) */
+  border-radius: 14px;
+}
+
+.fx-tabs__list{
+  position: relative;
+  display: flex;
+  gap: .375rem;
+  padding: .375rem;
+  border-radius: 12px;
+  /* soft tint behind the tabs */
+  background: mix($color-brand, #fff, 4%);
+}
+
+.fx-tab{
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem .875rem;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: color .12s ease, transform .12s ease;
+
+  &:hover { transform: translateY(-1px); }
+  &:active { transform: translateY(0); }
+  &.is-active { color: var(--ink); }
+}
+
+/* sliding pill */
+.fx-tab__indicator{
+  position: absolute;
+  top: .375rem; bottom: .375rem;
+  left: .375rem; width: 0;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba($color-brand, .35);
+  box-shadow: 0 6px 16px rgba(2,6,23,.10), inset 0 1px 0 rgba(255,255,255,.6);
+  transition: transform .25s cubic-bezier(.2,.7,.2,1), width .25s cubic-bezier(.2,.7,.2,1);
+}
+[data-theme='dark'] .fx-tab__indicator{
+  background: $color-card-dark;
+  border-color: rgba($color-brand, .45);
+}
+
+/* panels */
+.fx-tab-panel{ opacity: 0; transition: opacity .2s ease; }
+[role="tabpanel"]:not([hidden]){ opacity: 1; }
+/* ==== /Fancy Tabs ==== */
+
+.post-share {
+  margin-top: 1rem;
+}
+
+.post-share a {
+  margin-right: 0.5rem;
+}
+
+.post-img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+}

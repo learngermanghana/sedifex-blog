@@ -1,0 +1,25 @@
+title: "Falowen Blog"
+description: "Insights and resources from Learn Language Education Academy"
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://blog.falowen.app" # your custom domain
+theme: minima
+header_pages:
+  - about.md
+  - search.md
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap # generate sitemap.xml
+  - jekyll-paginate-v2
+future: true
+# twitter_username: falowen
+github_username: falowen
+
+giscus:
+  enabled: false
+  repo: "owner/repo"
+  repo_id: "YOUR_REPO_ID"
+  category: "General"
+  category_id: "YOUR_CATEGORY_ID"
+  theme: light
+  lang: en
