@@ -4,7 +4,10 @@
 <meta name="robots" content="{{ page.robots }}">
 {% endif %}
 
-<link rel="icon" href="https://i.imgur.com/mcrrGfd.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="{{ '/photos/192.png' | absolute_url }}" />
+<link rel="icon" type="image/png" sizes="512x512" href="{{ '/photos/512.png' | absolute_url }}" />
+<link rel="icon" type="image/png" sizes="512x512" href="{{ '/photos/maskable-512.png' | absolute_url }}" purpose="maskable" />
+<link rel="apple-touch-icon" sizes="512x512" href="{{ '/photos/512.png' | absolute_url }}" />
 
 <link
   rel="feed"
