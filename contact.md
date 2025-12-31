@@ -8,7 +8,7 @@ permalink: /contact/
 
 We're here to help with course registrations, class details, and general inquiries.
 
-- **Email:** [learngermanghana@gmail.com](mailto:learngermanghana@gmail.com)
+- **Email:** [sedifexbiz@gmail.com](mailto:sedifexbiz@gmail.com)
 - **Phone:** [0205706589](tel:+233205706589)
 - **Mailing Address:** P.O. Box 2624, Kaneshie
 
@@ -21,4 +21,4 @@ We're here to help with course registrations, class details, and general inquiri
 - **Saturday:** Closed
 - **Sunday:** Closed
 
-Looking for the next start date? Visit the [Upcoming Classes]({{ '/upcoming-classes/' | relative_url }}) page.
+
