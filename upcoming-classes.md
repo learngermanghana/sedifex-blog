@@ -16,4 +16,4 @@ Join our upcoming Sedifex Inventory App training sessions to learn the essential
 | TBD | Workshop | Cycle count best practices | Improve accuracy across locations. |
 | TBD | Live demo | Reporting and alerts | Build dashboards your team will use. |
 
-If you want to reserve a spot or request a private team session, email us at [support@sedifex.com](mailto:support@sedifex.com).
+If you want to reserve a spot or request a private team session, email us at [sedifexbiz@gmail.com](mailto:sedifexbiz@gmail.com).
