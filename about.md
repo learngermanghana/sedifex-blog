@@ -1,5 +1,5 @@
 ---
-layout: about
+layout: default
 title: "How Sedifex Was Born"
 permalink: /our-story/
 ---
