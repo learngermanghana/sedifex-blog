@@ -1,8 +1,4 @@
-{% if page.excerpt %}
-<meta name="description" content="{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}">
-{% elsif site.description %}
-<meta name="description" content="{{ site.description | escape }}">
-{% endif %}
+{% seo %}
 
 {% if page.robots %}
 <meta name="robots" content="{{ page.robots }}">
@@ -17,11 +13,12 @@
   href="{{ '/feed.xml' | absolute_url }}"
 >
 
-<meta property="og:title" content="{{ page.title | default: site.title | escape }}">
-<meta property="og:description" content="{{ page.excerpt | strip_html | strip_newlines | truncate: 160 | default: site.description | escape }}">
-<meta property="og:url" content="{{ page.url | absolute_url }}">
-<meta property="og:site_name" content="{{ site.title | escape }}">
-<meta property="og:type" content="website">
+<link
+  rel="sitemap"
+  type="application/xml"
+  title="Sitemap"
+  href="{{ '/sitemap.xml' | absolute_url }}"
+>
 
 {% if site.google_analytics %}
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
