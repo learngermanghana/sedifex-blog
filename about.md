@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "How Sedifex Was Born"
-permalink: /our-story/
+permalink: /about/
 ---
 
 ## How Sedifex Was Born
@@ -70,9 +70,9 @@ software should adapt to people—not the other way around.
 
 ## Who Is Behind the Products?
 
-All these platforms are built by **:contentReference[oaicite:0]{index=0}**, a technology company focused on practical solutions.
+All these platforms are built by the Sedifex team, a technology company focused on practical solutions.
 
-The company is led by **:contentReference[oaicite:1]{index=1}**, who continues to work closely with users to shape products based on real feedback.
+The company is led by its founding team, who continue to work closely with users to shape products based on real feedback.
 
 ## Looking Ahead
 
