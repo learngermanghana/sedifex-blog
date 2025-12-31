@@ -1,97 +1,85 @@
 ---
 layout: page
-title: "About Sedifex"
-permalink: /about/
+title: "How Sedifex Was Born"
+permalink: /our-story/
 ---
 
-## What Is Sedifex?
+## How Sedifex Was Born
 
-Sedifex is a modern inventory and sales management platform built to simplify how businesses operate every day.
+Sedifex was not the first application we built.
 
-It is designed for shops, kiosks, pharmacies, boutiques, supermarkets, and growing businesses that need powerful tools without complicated hardware or expensive setups.
+Before Sedifex, we created **Falowen**, an education-focused platform designed to help students prepare, learn, and improve through technology. Falowen proved something important to us: well-designed software can solve real problems when it is built around people’s actual needs.
 
-Sedifex works seamlessly on **computers, phones, and tablets**, allowing business owners and staff to manage sales from anywhere.
+That lesson shaped everything that came next.
 
-## Who Built Sedifex?
+## The Problem That Sparked Sedifex
 
-Sedifex is a product of **:contentReference[oaicite:0]{index=0}**, a technology company focused on building practical digital tools for real businesses.
+The idea for Sedifex came from a real client.
 
-The platform is led by **:contentReference[oaicite:1]{index=1}**, who serves as the CEO.  
-Sedifex was created to solve everyday operational problems faced by small and medium-sized businesses, especially in fast-moving retail environments.
+A shop owner approached us with a request for an inventory and sales system built specifically for their store. As we discussed their needs, one issue became clear very quickly:  
+**building a custom system for a single shop was too expensive**.
 
-## Why Sedifex Exists
+Not because the shop did not value technology, but because custom software often becomes inaccessible to small and medium-sized businesses.
 
-Many businesses rely on fragmented tools:
-- notebooks for sales,
-- spreadsheets for stock,
-- WhatsApp for customer communication,
-- and manual receipts or invoices.
+At the same time, the problems they were facing were not unique:
+- tracking stock manually,
+- recording sales inconsistently,
+- issuing handwritten receipts,
+- and communicating with customers through scattered tools.
 
-Sedifex brings these workflows into one system—simple to use, reliable, and scalable as a business grows.
+That moment raised an important question:  
+**Why build one expensive system for one shop, when many shops have the same problem?**
 
-## What Sedifex Can Do
+## From One Shop to Many
 
-Sedifex is more than inventory software. It is a complete business operations platform.
+Instead of building a one-off solution, we decided to build a platform that any shop could use.
 
-### Dashboard
-The dashboard provides a clear overview of business performance:
-- daily and total sales
-- stock status
-- recent activity
-- operational trends
+That decision is how **Sedifex** was born.
 
-Important information is visible at a glance.
+Sedifex was designed to reduce costs by:
+- sharing one system across many businesses,
+- eliminating the need for expensive hardware,
+- and working on devices people already own—computers, phones, and tablets.
 
-### Products & Inventory
-Sedifex simplifies inventory management:
-- add products with prices, SKUs, and barcodes  
-- track stock levels automatically  
-- manage both products and services  
+By building Sedifex as a shared platform, businesses could access professional tools without paying the full cost of custom software.
 
-This helps reduce errors and improve stock control.
+## Building for Real Business Life
 
-### Sell & Receive (Point of Sale)
-The Sell and Receive features are designed for speed and transparency:
-- scan barcodes or add items manually  
-- apply tax and discounts  
-- support multiple payment methods and split payments  
+From the beginning, Sedifex was built for real shop environments:
+- small counters,
+- kiosks,
+- growing retail stores,
+- and mobile sellers.
 
-Sedifex also includes a **Customer Display**, allowing customers to see items and totals live on a phone, tablet, or second screen.
+Features like inventory management, fast selling, customer display, invoice and receipt generation, and bulk SMS were added because real businesses needed them—not because they looked good on a feature list.
 
-### Invoices & Receipts
-Sedifex includes built-in tools to generate:
-- professional invoices  
-- printable and shareable receipts  
-- receipt links and QR codes for easy access  
+The goal was always simple:  
+**make daily business operations easier, clearer, and more professional.**
 
-Receipts can be shared via WhatsApp, email, or direct links.
+## Beyond Retail: Apzla
 
-### Bulk SMS & Customer Communication
-Sedifex helps businesses stay connected:
-- send bulk SMS for promotions and announcements  
-- notify customers about invoices and payments  
-- improve engagement and retention  
+After Sedifex, we went on to build **Apzla**, a church management system.
 
-All without relying on external tools.
+Apzla was created using the same philosophy:
+- understand the real problem,
+- reduce complexity,
+- and build tools people can actually use.
 
-## Built for Real Businesses
+Across Falowen, Sedifex, and Apzla, one principle remains constant:  
+software should adapt to people—not the other way around.
 
-Sedifex is designed to work in real-world environments:
-- supports single-screen and multi-screen setups  
-- works for fixed shops and mobile sellers  
-- adapts easily as a business grows  
+## Who Is Behind the Products?
 
-You can start small and scale without changing systems.
+All these platforms are built by **:contentReference[oaicite:0]{index=0}**, a technology company focused on practical solutions.
 
-## Our Vision
+The company is led by **:contentReference[oaicite:1]{index=1}**, who continues to work closely with users to shape products based on real feedback.
 
-Xenom IT Solutions built Sedifex with a clear vision:  
-to make professional retail and business management tools accessible, affordable, and easy to use for businesses of all sizes.
+## Looking Ahead
 
-Sedifex removes unnecessary complexity so businesses can focus on serving customers and growing sustainably.
+Sedifex continues to grow because businesses continue to use it, challenge it, and improve it through real-world feedback.
 
-## Get Started
+What started as a request from one shop has become a platform built for many.
 
-Sedifex runs on the web and works across devices.
+And the journey is still ongoing.
 
-👉 Learn more at [https://sedifex.com](https://sedifex.com).
+👉 Learn more about Sedifex at [https://sedifex.com](https://sedifex.com).
