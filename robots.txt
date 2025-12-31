@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://blog.falowen.app/sitemap.xml
-
+Sitemap: https://blog.sedifex.com/sitemap.xml

@@ -4,39 +4,39 @@ title: About
 permalink: /about/
 ---
 
-# About the Falowen Blog
+# About the Sedifex Inventory App Blog
 
-<img src="https://i.imgur.com/peGxlkO.png" alt="About Falowen" class="post-img">
+<img src="https://i.imgur.com/peGxlkO.png" alt="About Sedifex Inventory App" class="post-img">
 
-The **Falowen Blog** is where we share stories, tips, and updates from **Learn Language Education Academy** and the **Falowen app**.
+The **Sedifex Inventory App Blog** is where we share stories, tips, and updates from the **Sedifex Inventory App** team.
 
 
 Our goal is simple:  
-- Help learners prepare for **Goethe exams** (A1–C1) with practical advice  
-- Share **vocabulary, grammar, and speaking strategies** that make daily practice easier  
-- Keep you updated on **new features** and **success stories** from our students  
+- Help teams track stock accurately with practical inventory tips  
+- Share **workflow improvements** that make receiving, counting, and auditing faster  
+- Keep you updated on **new features** and **customer success stories**  
 
 ---
 
 ## Who We Are
 
-Falowen is built by teachers who understand the challenges of learning German.  
-From classrooms in **Accra, Ghana** to learners around the globe, we combine teaching experience with modern technology to make language learning accessible and effective.  
+Sedifex is built by operators and engineers who understand the daily challenges of inventory management.  
+From growing retail teams to multi-location operations, we combine real-world experience with reliable software to keep stock accurate and teams aligned.  
 
 ---
 
 ## What You’ll Find Here
 
-- **Study Tips and Hacks** → Learn smarter, not harder  
-- **Exam Preparation** → Guidance for Goethe A1–C1  
-- **Vocabulary Routines** → Build daily learning habits  
-- **Falowen Updates** → New features, success stories, and behind the scenes  
+- **Inventory Best Practices** → Count cycles, audits, and receiving workflows  
+- **Process Improvements** → Reduce shrink and improve stock accuracy  
+- **Operations Tips** → Reporting, alerts, and team coordination  
+- **Sedifex Updates** → New features, success stories, and behind the scenes  
 
 ---
 
 ## Join the Journey
 
-Language learning is more than exams — it is about confidence, culture, and connection.  
+Inventory management is more than numbers — it is about confidence, visibility, and trust.  
 
-Visit [falowen.app](https://falowen.app) to try the app.  
-Follow us on **Facebook, LinkedIn, and Instagram** for daily learning tips.
+Visit [sedifex.com](https://sedifex.com) to try the app.  
+Follow us on **LinkedIn and X** for product updates and inventory tips.

@@ -1,7 +1,7 @@
-title: "Falowen Blog"
-description: "Insights and resources from Learn Language Education Academy"
+title: "Sedifex Inventory App Blog"
+description: "Insights and resources from the Sedifex Inventory App team"
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://blog.falowen.app" # your custom domain
+url: "https://blog.sedifex.com" # your custom domain
 theme: minima
 header_pages:
   - about.md
@@ -12,8 +12,8 @@ plugins:
   - jekyll-sitemap # generate sitemap.xml
   - jekyll-paginate-v2
 future: true
-# twitter_username: falowen
-github_username: falowen
+# twitter_username: sedifex
+github_username: sedifex
 
 giscus:
   enabled: false
