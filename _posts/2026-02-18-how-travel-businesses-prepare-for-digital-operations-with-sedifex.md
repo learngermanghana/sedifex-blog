@@ -117,4 +117,3 @@ With a strong online presence in place, the business is now better positioned to
 - Prepare for future digital operations
 
 👉 Learn more about Sedifex at https://sedifex.com  
-👉 Need a business website? Visit https://xenomitsolutions.com
