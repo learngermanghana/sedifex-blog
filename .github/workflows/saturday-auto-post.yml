@@ -1,0 +1,36 @@
+name: Saturday Auto Publish Blog Post
+
+on:
+  schedule:
+    - cron: '0 8 * * 6' # Every Saturday at 08:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish-post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Publish next scheduled post
+        run: python scripts/auto_publish_post.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "sedifex-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add _posts _scheduled_posts
+          if git diff --cached --quiet; then
+            echo "No post was published."
+            exit 0
+          fi
+          git commit -m "chore(blog): auto-publish scheduled Saturday post"
+          git push
