@@ -29,13 +29,6 @@ Their vision is clear: a future where every family can access essential health i
 
 When an NGO reaches more communities, daily operations become more complex.
 
-GHI reports strong momentum, including:
-
-- **12,500+ people reached**
-- **48 communities supported**
-- **120 health campaigns run**
-- **27 active partners**
-
 As these numbers grow, organizations usually need stronger systems for:
 
 - Program activity records
