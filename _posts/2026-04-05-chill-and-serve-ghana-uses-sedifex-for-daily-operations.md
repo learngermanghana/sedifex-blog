@@ -5,7 +5,7 @@ date: 2026-04-05
 tags: [sedifex, retail, sms-marketing, invoicing, sales-tracking, customer-data]
 categories: [Business, Retail]
 excerpt: "Chill and Serve Ghana uses Sedifex to send branded SMS, record sales, store customer data, generate invoices, sync updates to its website, and gain visibility through a free public Sedifex URL."
-image: https://raw.githubusercontent.com/learngermanghana/sedifex-blog/main/photos/pexels-seunadeniyi-17691084.jpg
+image: https://raw.githubusercontent.com/learngermanghana/chillandserve/main/public/2022-07-12.jpg
 ---
 
 ## Chill and Serve Ghana Is Scaling with Sedifex
