@@ -47,3 +47,9 @@ This folder contains queued blog posts for the Saturday auto-publishing agent.
 - multi-branch-stock-management-for-retailers-in-ghana.md
 - how-to-perform-a-monthly-stock-audit-step-by-step.md
 - inventory-kpis-every-ghana-business-should-track.md
+
+
+## New April 2026 posts
+- how-to-stop-using-receipt-books-in-ghana.md
+- how-to-track-daily-sales-and-profit-on-phone-ghana.md
+- how-to-reduce-theft-and-stock-shortages-in-retail-shops.md
