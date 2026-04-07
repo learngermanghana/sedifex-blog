@@ -35,3 +35,15 @@ This folder contains queued blog posts for the Saturday auto-publishing agent.
 - business-software-in-accra.md
 - inventory-system-kumasi.md
 - pos-system-takoradi.md
+
+## 2026 inventory operations cluster
+- best-inventory-management-software-in-ghana-2026-guide.md
+- how-to-reduce-stockouts-in-ghana-retail-stores.md
+- pos-vs-inventory-software-what-ghana-smes-need.md
+- how-pharmacies-in-ghana-can-track-expiry-dates-better.md
+- manual-stock-tracking-vs-software-cost-comparison.md
+- how-to-set-reorder-levels-for-fast-moving-products.md
+- common-inventory-mistakes-ghana-businesses-make.md
+- multi-branch-stock-management-for-retailers-in-ghana.md
+- how-to-perform-a-monthly-stock-audit-step-by-step.md
+- inventory-kpis-every-ghana-business-should-track.md
