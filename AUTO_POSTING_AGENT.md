@@ -1,19 +1,24 @@
-# Saturday Auto-Posting Agent
+# Daily Product Auto-Posting Agent
 
-This repository now includes an automated publishing agent for blog content.
+This repository includes an automated publishing agent that creates one product promo post per day.
 
 ## How it works
 
-- Source queue: `_scheduled_posts/*.md`
-- Published destination: `_posts/YYYY-MM-DD-<slug>.md`
+- Source feed: `https://www.sedifexmarket.com/api/feeds/google-merchant-rss`
 - Runner script: `scripts/auto_publish_post.py`
-- Schedule: `.github/workflows/saturday-auto-post.yml` (every Saturday at 08:00 UTC)
+- Published destination: `_posts/YYYY-MM-DD-<product-slug>.md`
+- Schedule: `.github/workflows/saturday-auto-post.yml` (daily at 08:00 UTC)
+- Default fallback image used in posts:  
+  `https://storage.googleapis.com/sedifeximage/stores/vrwe9dieCqchfhxqMc3UiaU2qSJ3/products/draft-ed9225c8-42d0-4be9-afe4-f3342367bea2-1.jpg?v=1776178401704`
 
-On each Saturday run, the workflow:
+On each run, the script:
 
-1. Picks the oldest markdown file (alphabetical order) from `_scheduled_posts`.
-2. Moves it into `_posts` using the current date as Jekyll filename prefix.
-3. Commits and pushes the published post automatically.
+1. Reads products from the RSS feed.
+2. Picks one product for the day (rotating and avoiding products already posted when possible).
+3. Generates a Markdown blog post in `_posts` with marketing copy and product link.
+4. Includes the sample image as the post hero image and product image content.
+
+If a post for the current date already exists, it exits without creating a duplicate.
 
 ## Manual test
 
@@ -23,6 +28,12 @@ python scripts/auto_publish_post.py --dry-run
 
 ## Notes
 
-- Keep future content in `_scheduled_posts`.
-- Ensure each queued markdown file has valid Jekyll front matter.
-- If no files are in the queue, the workflow exits cleanly without a commit.
+- Designed to promote Sedifex Market product listings consistently.
+- No external Python dependencies are required.
+- You can override the feed or fallback image when testing:
+
+```bash
+python scripts/auto_publish_post.py \
+  --feed-url "https://www.sedifexmarket.com/api/feeds/google-merchant-rss" \
+  --fallback-image "https://storage.googleapis.com/.../sample.jpg"
+```
