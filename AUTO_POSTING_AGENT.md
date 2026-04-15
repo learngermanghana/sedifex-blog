@@ -20,6 +20,8 @@ On each run, the script:
 
 If a post for the current date already exists, it exits without creating a duplicate.
 
+The blog no longer maintains a separate `/products/` landing page; publishing is focused on the daily post only.
+
 ## Manual test
 
 ```bash
