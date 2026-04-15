@@ -70,3 +70,34 @@
   width: 100%;
   height: auto;
 }
+
+.product-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.product-card {
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  padding: 1rem;
+  background: #fff;
+}
+
+[data-theme="dark"] .product-card {
+  background: #16181d;
+  border-color: #2d313a;
+}
+
+.product-card img {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  margin-bottom: 0.75rem;
+}
+
+.product-card h2 {
+  margin-top: 0;
+}
