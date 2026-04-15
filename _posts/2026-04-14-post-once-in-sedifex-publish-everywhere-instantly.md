@@ -5,7 +5,7 @@ date: 2026-04-14
 tags: [sedifex, sync, ecommerce, google-merchant, african-business, sms-marketing]
 categories: [Growth, Ecommerce]
 excerpt: "Add one product or service in Sedifex and instantly sync it across your website, Google Merchant channels, social touchpoints, and your public Sedifex URL."
-image: https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=1600&q=80
+image: https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1600&q=80
 ---
 
 ## “Post once in Sedifex. Publish everywhere instantly.”
