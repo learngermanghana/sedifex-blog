@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 POSTS_DIR = ROOT / "_posts"
+PRODUCTS_PAGE_PATH = ROOT / "products.md"
 
 RSS_FEED_URL = "https://www.sedifexmarket.com/api/feeds/google-merchant-rss"
 DEFAULT_IMAGE_URL = (
@@ -82,6 +83,7 @@ def parse_feed(feed_url: str) -> list[dict[str, str]]:
         brand = first_non_empty(xml_text(item, f"{ns_g}brand"), "Sedifex Market")
         price = first_non_empty(xml_text(item, f"{ns_g}price"), "")
         condition = first_non_empty(xml_text(item, f"{ns_g}condition"), "")
+        availability = first_non_empty(xml_text(item, f"{ns_g}availability"), "")
 
         products.append(
             {
@@ -94,6 +96,7 @@ def parse_feed(feed_url: str) -> list[dict[str, str]]:
                 "brand": brand,
                 "price": price,
                 "condition": condition,
+                "availability": availability,
             }
         )
 
@@ -121,6 +124,27 @@ def existing_product_ids() -> set[str]:
                 ids.add(match.group(1).strip())
                 break
     return ids
+
+
+def read_post_metadata(post_path: Path) -> dict[str, str]:
+    metadata: dict[str, str] = {}
+    pattern = re.compile(r"^(source_product_id|title):\s*(.+?)\s*$")
+    try:
+        content = post_path.read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        return metadata
+
+    for line in content.splitlines():
+        match = pattern.match(line.strip())
+        if not match:
+            continue
+        metadata[match.group(1)] = match.group(2).strip().strip('"')
+    return metadata
+
+
+def find_today_post(today_iso: str) -> Path | None:
+    matches = sorted(POSTS_DIR.glob(f"{today_iso}-*.md"))
+    return matches[0] if matches else None
 
 
 def pick_product(products: list[dict[str, str]], used_ids: set[str], today: date) -> dict[str, str]:
@@ -188,6 +212,54 @@ def build_post(today_iso: str, product: dict[str, str], fallback_image: str) -> 
     return body
 
 
+def post_url(today: date, slug: str) -> str:
+    return f"/{today.year:04d}/{today.month:02d}/{today.day:02d}/{slug}.html"
+
+
+def build_products_page(product: dict[str, str], today: date, slug: str) -> str:
+    image = product["image"] or DEFAULT_IMAGE_URL
+    post_link = post_url(today, slug)
+    availability = product["availability"] or "Not specified"
+    condition = product["condition"] or "Not specified"
+    price = product["price"] or "Not listed"
+
+    return dedent(
+        f"""\
+        ---
+        layout: default
+        title: Products
+        permalink: /products/
+        ---
+
+        # Product Picks
+
+        This page highlights products selected for blog and promo posts. Each product block includes image, price, store name, availability, and direct product link.
+
+        <div class="product-grid">
+          <article class="product-card">
+            <img src="{image}" alt="{product['title']} product image" loading="lazy" />
+            <h2>{product['title']}</h2>
+            <ul>
+              <li><strong>Store:</strong> {product['brand'] or 'Sedifex Market'}</li>
+              <li><strong>Price:</strong> {price}</li>
+              <li><strong>Availability:</strong> {availability}</li>
+              <li><strong>Condition:</strong> {condition}</li>
+              <li><strong>Product ID:</strong> {product['id']}</li>
+            </ul>
+            <p><a href="{product['link']}" target="_blank" rel="noopener">View product</a></p>
+            <p><a href="{post_link}">Read spotlight post</a></p>
+          </article>
+        </div>
+
+        ## Feed Source
+
+        Product feed source: <https://www.sedifexmarket.com/api/feeds/google-merchant-rss>
+
+        Latest spotlight source file: `{today.isoformat()}-{slug}.md`
+        """
+    ).strip() + "\n"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Publish one daily product spotlight post from RSS")
     parser.add_argument("--dry-run", action="store_true", help="Show actions without writing files")
@@ -209,14 +281,36 @@ def main() -> int:
         print("No products found in RSS feed.")
         return 0
 
-    used_ids = existing_product_ids()
-    product = pick_product(products, used_ids, today)
+    today_post = find_today_post(today_iso)
+    product: dict[str, str] | None = None
+    destination: Path
+    slug: str
 
-    slug = slugify(product["title"])
-    destination = POSTS_DIR / f"{today_iso}-{slug}.md"
+    if today_post is not None:
+        destination = today_post
+        slug = today_post.stem.removeprefix(f"{today_iso}-")
+        metadata = read_post_metadata(today_post)
+        source_product_id = metadata.get("source_product_id", "")
+        if source_product_id:
+            product = next((p for p in products if p["id"] == source_product_id), None)
+        if product is None and slug:
+            product = next((p for p in products if p["slug"] == slug), None)
+    else:
+        used_ids = existing_product_ids()
+        product = pick_product(products, used_ids, today)
+        slug = slugify(product["title"])
+        destination = POSTS_DIR / f"{today_iso}-{slug}.md"
+
+    if product is None:
+        print("Could not map today's post to a current feed item; using first feed product.")
+        product = products[0]
+        slug = slugify(product["title"])
 
     if destination.exists():
         print(f"Post already exists for today: {destination.relative_to(ROOT)}")
+        products_page_content = build_products_page(product, today, slug)
+        PRODUCTS_PAGE_PATH.write_text(products_page_content, encoding="utf-8")
+        print(f"Updated: {PRODUCTS_PAGE_PATH.relative_to(ROOT)}")
         return 0
 
     content = build_post(today_iso, product, args.fallback_image)
@@ -229,6 +323,9 @@ def main() -> int:
 
     POSTS_DIR.mkdir(parents=True, exist_ok=True)
     destination.write_text(content, encoding="utf-8")
+    products_page_content = build_products_page(product, today, slug)
+    PRODUCTS_PAGE_PATH.write_text(products_page_content, encoding="utf-8")
+    print(f"Updated: {PRODUCTS_PAGE_PATH.relative_to(ROOT)}")
     print("Done.")
     return 0
 
