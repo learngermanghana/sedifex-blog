@@ -13,7 +13,6 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 POSTS_DIR = ROOT / "_posts"
-PRODUCTS_PAGE_PATH = ROOT / "products.md"
 
 RSS_FEED_URL = "https://www.sedifexmarket.com/api/feeds/google-merchant-rss"
 DEFAULT_IMAGE_URL = (
@@ -212,54 +211,6 @@ def build_post(today_iso: str, product: dict[str, str], fallback_image: str) -> 
     return body
 
 
-def post_url(today: date, slug: str) -> str:
-    return f"/{today.year:04d}/{today.month:02d}/{today.day:02d}/{slug}.html"
-
-
-def build_products_page(product: dict[str, str], today: date, slug: str) -> str:
-    image = product["image"] or DEFAULT_IMAGE_URL
-    post_link = post_url(today, slug)
-    availability = product["availability"] or "Not specified"
-    condition = product["condition"] or "Not specified"
-    price = product["price"] or "Not listed"
-
-    return dedent(
-        f"""\
-        ---
-        layout: default
-        title: Products
-        permalink: /products/
-        ---
-
-        # Product Picks
-
-        This page highlights products selected for blog and promo posts. Each product block includes image, price, store name, availability, and direct product link.
-
-        <div class="product-grid">
-          <article class="product-card">
-            <img src="{image}" alt="{product['title']} product image" loading="lazy" />
-            <h2>{product['title']}</h2>
-            <ul>
-              <li><strong>Store:</strong> {product['brand'] or 'Sedifex Market'}</li>
-              <li><strong>Price:</strong> {price}</li>
-              <li><strong>Availability:</strong> {availability}</li>
-              <li><strong>Condition:</strong> {condition}</li>
-              <li><strong>Product ID:</strong> {product['id']}</li>
-            </ul>
-            <p><a href="{product['link']}" target="_blank" rel="noopener">View product</a></p>
-            <p><a href="{post_link}">Read spotlight post</a></p>
-          </article>
-        </div>
-
-        ## Feed Source
-
-        Product feed source: <https://www.sedifexmarket.com/api/feeds/google-merchant-rss>
-
-        Latest spotlight source file: `{today.isoformat()}-{slug}.md`
-        """
-    ).strip() + "\n"
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(description="Publish one daily product spotlight post from RSS")
     parser.add_argument("--dry-run", action="store_true", help="Show actions without writing files")
@@ -308,9 +259,6 @@ def main() -> int:
 
     if destination.exists():
         print(f"Post already exists for today: {destination.relative_to(ROOT)}")
-        products_page_content = build_products_page(product, today, slug)
-        PRODUCTS_PAGE_PATH.write_text(products_page_content, encoding="utf-8")
-        print(f"Updated: {PRODUCTS_PAGE_PATH.relative_to(ROOT)}")
         return 0
 
     content = build_post(today_iso, product, args.fallback_image)
@@ -323,9 +271,6 @@ def main() -> int:
 
     POSTS_DIR.mkdir(parents=True, exist_ok=True)
     destination.write_text(content, encoding="utf-8")
-    products_page_content = build_products_page(product, today, slug)
-    PRODUCTS_PAGE_PATH.write_text(products_page_content, encoding="utf-8")
-    print(f"Updated: {PRODUCTS_PAGE_PATH.relative_to(ROOT)}")
     print("Done.")
     return 0
 
