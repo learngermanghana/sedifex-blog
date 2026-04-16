@@ -161,8 +161,9 @@ def pick_product(products: list[dict[str, str]], used_ids: set[str], today: date
 
 
 def build_post(today_iso: str, product: dict[str, str], fallback_image: str) -> str:
-    post_image = fallback_image
-    inline_image = product["image"] or fallback_image
+    product_image = product["image"] or fallback_image
+    post_image = product_image
+    inline_image = product_image
     excerpt_base = product["description"] or f"Discover {product['title']} on Sedifex Market."
     excerpt = squash_whitespace(excerpt_base)[:160]
 
