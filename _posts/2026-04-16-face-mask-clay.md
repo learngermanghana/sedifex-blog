@@ -5,7 +5,7 @@ date: 2026-04-16
 categories: [Marketing, Products]
 tags: [sedifex market, product spotlight, merchant promo, ecommerce]
 excerpt: "**Product Name:** Face Mask Clay **Item Type:** Product **Description:** Transform your skincare routine with our premium Face Mask Clay! This all-natural clay "
-image: https://storage.googleapis.com/sedifeximage/stores/vrwe9dieCqchfhxqMc3UiaU2qSJ3/products/draft-ed9225c8-42d0-4be9-afe4-f3342367bea2-1.jpg?v=1776178401704
+image: https://storage.googleapis.com/sedifeximage/stores/37mJqg20MjOriggaIaOOuahDsgj1/products/l3GcifswSzhfrUqK8XIc-1.jpg?v=1776020437058
 source_product_id: l3GcifswSzhfrUqK8XIc
 source_feed: https://www.sedifexmarket.com/api/feeds/google-merchant-rss
 ---
