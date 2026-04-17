@@ -127,7 +127,7 @@ def existing_product_ids() -> set[str]:
 
 def read_post_metadata(post_path: Path) -> dict[str, str]:
     metadata: dict[str, str] = {}
-    pattern = re.compile(r"^(source_product_id|title):\s*(.+?)\s*$")
+    pattern = re.compile(r"^(source_product_id|source_feed|title):\s*(.+?)\s*$")
     try:
         content = post_path.read_text(encoding="utf-8", errors="ignore")
     except OSError:
@@ -144,6 +144,29 @@ def read_post_metadata(post_path: Path) -> dict[str, str]:
 def find_today_post(today_iso: str) -> Path | None:
     matches = sorted(POSTS_DIR.glob(f"{today_iso}-*.md"))
     return matches[0] if matches else None
+
+
+def find_today_product_post(today_iso: str) -> Path | None:
+    for post_path in sorted(POSTS_DIR.glob(f"{today_iso}-*.md")):
+        metadata = read_post_metadata(post_path)
+        if metadata.get("source_product_id"):
+            return post_path
+    return None
+
+
+def unique_destination(base_path: Path) -> Path:
+    if not base_path.exists():
+        return base_path
+
+    stem = base_path.stem
+    suffix = base_path.suffix
+    parent = base_path.parent
+    counter = 2
+    while True:
+        candidate = parent / f"{stem}-{counter}{suffix}"
+        if not candidate.exists():
+            return candidate
+        counter += 1
 
 
 def pick_product(products: list[dict[str, str]], used_ids: set[str], today: date) -> dict[str, str]:
@@ -179,34 +202,34 @@ def build_post(today_iso: str, product: dict[str, str], fallback_image: str) -> 
 
     body = dedent(
         f"""\
-        ---
-        layout: post
-        title: "Daily Product Spotlight: {escape_yaml(product['title'])}"
-        date: {today_iso}
-        categories: [Marketing, Products]
-        tags: [sedifex market, product spotlight, merchant promo, ecommerce]
-        excerpt: "{escape_yaml(excerpt)}"
-        image: {post_image}
-        source_product_id: {escape_yaml(product['id'])}
-        source_feed: {RSS_FEED_URL}
-        ---
+---
+layout: post
+title: "Daily Product Spotlight: {escape_yaml(product['title'])}"
+date: {today_iso}
+categories: [Marketing, Products]
+tags: [sedifex market, product spotlight, merchant promo, ecommerce]
+excerpt: "{escape_yaml(excerpt)}"
+image: {post_image}
+source_product_id: {escape_yaml(product['id'])}
+source_feed: {RSS_FEED_URL}
+---
 
-        Today's featured pick from Sedifex Market is **{product['title']}**.
+Today's featured pick from Sedifex Market is **{product['title']}**.
 
-        {squash_whitespace(product['description']) or 'This product is now being promoted as part of our daily merchant spotlight series.'}
+{squash_whitespace(product['description']) or 'This product is now being promoted as part of our daily merchant spotlight series.'}
 
-        {details_block}
+{details_block}
 
-        ![{product['title']}]({inline_image})
+![{product['title']}]({inline_image})
 
-        ## Why we are spotlighting this product
+## Why we are spotlighting this product
 
-        Sedifex Market helps merchants gain visibility by promoting one product every day. This keeps the catalog fresh, helps shoppers discover new listings, and gives stores consistent exposure.
+Sedifex Market helps merchants gain visibility by promoting one product every day. This keeps the catalog fresh, helps shoppers discover new listings, and gives stores consistent exposure.
 
-        👉 View product: [{product['title']}]({product['link']})
+👉 View product: [{product['title']}]({product['link']})
 
-        👉 Explore more products: [Sedifex Market](https://www.sedifexmarket.com)
-        """
+👉 Explore more products: [Sedifex Market](https://www.sedifexmarket.com)
+"""
     ).strip() + "\n"
 
     return body
@@ -234,9 +257,14 @@ def main() -> int:
         return 0
 
     today_post = find_today_post(today_iso)
+    today_product_post = find_today_product_post(today_iso)
     product: dict[str, str] | None = None
     destination: Path
     slug: str
+
+    if today_product_post is not None:
+        print(f"Daily product post already exists for today: {today_product_post.relative_to(ROOT)}")
+        return 0
 
     if today_post is not None:
         destination = today_post
@@ -247,11 +275,17 @@ def main() -> int:
             product = next((p for p in products if p["id"] == source_product_id), None)
         if product is None and slug:
             product = next((p for p in products if p["slug"] == slug), None)
+
+        if not metadata.get("source_product_id"):
+            used_ids = existing_product_ids()
+            product = pick_product(products, used_ids, today)
+            slug = slugify(product["title"])
+            destination = unique_destination(POSTS_DIR / f"{today_iso}-daily-product-{slug}.md")
     else:
         used_ids = existing_product_ids()
         product = pick_product(products, used_ids, today)
         slug = slugify(product["title"])
-        destination = POSTS_DIR / f"{today_iso}-{slug}.md"
+        destination = unique_destination(POSTS_DIR / f"{today_iso}-daily-product-{slug}.md")
 
     if product is None:
         print("Could not map today's post to a current feed item; using first feed product.")
