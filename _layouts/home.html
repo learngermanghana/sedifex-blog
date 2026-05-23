@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8">
   <title>{{ site.title }}</title>
@@ -11,35 +11,91 @@
 <body>
   {% include header.html %}
 
-  <!-- Hero -->
-  <header class="hero">
-    <div class="wrap">
+  <header class="hero hero-home">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Sedifex Blog</span>
+        <h1>Ideas for selling smarter, receiving payments, and growing online.</h1>
+        <p>
+          Practical guides for Ghanaian businesses, Sedifex Market sellers, and customers who want to shop,
+          pay, and receive receipts faster.
+        </p>
+        <div class="hero-actions">
+          <a class="cta" href="https://www.sedifexmarket.com" target="_blank" rel="noopener">Shop Sedifex Market <span class="cta-icon">→</span></a>
+          <a class="cta secondary" href="https://pay.sedifex.com" target="_blank" rel="noopener">Search & pay online</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Sedifex blog highlights">
+        <div class="hero-panel-header">
+          <span class="hero-badge">Daily posts</span>
+          <strong>Product spotlight + business education</strong>
+        </div>
+        <div class="hero-mini-list">
+          <div><span>01</span><p>Discover products from Sedifex Market.</p></div>
+          <div><span>02</span><p>Learn how stores manage sales and inventory.</p></div>
+          <div><span>03</span><p>Use Pay Sedifex to search a store and pay online.</p></div>
+        </div>
+      </aside>
     </div>
   </header>
 
-  <!-- Latest posts grid -->
-  <section class="wrap section">
-    <h2>Latest articles</h2>
+  <section class="wrap feature-strip" aria-label="Sedifex quick links">
+    <a class="feature" href="https://www.sedifexmarket.com" target="_blank" rel="noopener">
+      <span class="feature-icon">🛒</span>
+      <div>
+        <h3>Sedifex Market</h3>
+        <p>Browse products from connected businesses.</p>
+      </div>
+    </a>
+    <a class="feature" href="https://pay.sedifex.com" target="_blank" rel="noopener">
+      <span class="feature-icon">💳</span>
+      <div>
+        <h3>Pay Sedifex</h3>
+        <p>Search a store or product and pay online.</p>
+      </div>
+    </a>
+    <a class="feature" href="https://www.sedifex.com" target="_blank" rel="noopener">
+      <span class="feature-icon">⚙️</span>
+      <div>
+        <h3>Business tools</h3>
+        <p>Manage stock, receipts, reports, and sales.</p>
+      </div>
+    </a>
+  </section>
+
+  <section class="wrap section latest-section">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow muted-eyebrow">Latest from the blog</span>
+        <h2>Fresh posts for buyers and business owners</h2>
+      </div>
+      <a class="pill view-all" href="{{ '/blogs/' | relative_url }}">View all posts</a>
+    </div>
+
     <div class="latest">
-      {% for post in site.posts limit: 3 %}
-      <article class="card">
-        <a href="{{ post.url | relative_url }}">
+      {% for post in site.posts limit: 6 %}
+      <article class="card post-card">
+        <a class="post-card-link" href="{{ post.url | relative_url }}">
           {% if post.image %}
-          <img class="post-card-img" src="{{ post.image }}" alt="{{ post.title }}" />
+          <div class="post-card-media">
+            <img class="post-card-img" src="{{ post.image }}" alt="{{ post.title }}" loading="lazy" />
+          </div>
           {% endif %}
-          <h3>{{ post.title }}</h3>
-          {% if post.excerpt %}
-          <p>{{ post.excerpt | strip_html | truncate: 120 }}</p>
-          {% endif %}
+          <div class="post-card-body">
+            <div class="meta">
+              {{ post.date | date: "%b %d, %Y" }}
+              {% if post.categories and post.categories.size > 0 %} · {{ post.categories[0] }}{% endif %}
+            </div>
+            <h3>{{ post.title }}</h3>
+            {% if post.excerpt %}
+            <p>{{ post.excerpt | strip_html | truncate: 140 }}</p>
+            {% endif %}
+          </div>
         </a>
-        <div class="meta">
-          {{ post.date | date: "%b %d, %Y" }}
-          {% if post.tags %} · {{ post.tags | join: ", " }}{% endif %}
-        </div>
         <div class="actions">
-          <a class="pill" href="{{ post.url | relative_url }}">Read</a>
-          {% if post.categories and post.categories.size > 0 %}
-            <span class="pill">{{ post.categories[0] }}</span>
+          <a class="pill" href="{{ post.url | relative_url }}">Read article</a>
+          {% if post.tags and post.tags.size > 0 %}
+            <span class="pill soft">{{ post.tags[0] }}</span>
           {% endif %}
         </div>
       </article>
@@ -47,6 +103,16 @@
     </div>
   </section>
 
+  <section class="wrap section newsletter-card">
+    <div>
+      <span class="eyebrow">For business owners</span>
+      <h2>Want your products to appear online?</h2>
+      <p>Use Sedifex to manage inventory, payments, receipts, reports, and customer orders from one place.</p>
+    </div>
+    <a class="cta" href="https://www.sedifex.com" target="_blank" rel="noopener">Start with Sedifex <span class="cta-icon">→</span></a>
+  </section>
+
   {% include footer.html %}
+  <script src="{{ '/assets/js/theme-toggle.js' | relative_url }}"></script>
 </body>
 </html>
