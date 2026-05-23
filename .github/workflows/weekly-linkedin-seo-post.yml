@@ -22,7 +22,9 @@ jobs:
 
       - name: Post latest SEO caption to LinkedIn
         env:
-          LINKEDIN_DRY_RUN: 'true'
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_AUTHOR_URN: ${{ secrets.LINKEDIN_AUTHOR_URN }}
+          LINKEDIN_VERSION: '202510'
           BLOG_BASE_URL: https://blog.sedifex.com
         run: python scripts/post_latest_seo_to_linkedin.py
 
