@@ -1,0 +1,39 @@
+name: LinkedIn SEO Post
+
+on:
+  schedule:
+    - cron: '45 8 * * 1,4'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  post-linkedin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Post latest SEO caption to LinkedIn
+        env:
+          LINKEDIN_DRY_RUN: 'true'
+          BLOG_BASE_URL: https://blog.sedifex.com
+        run: python scripts/post_latest_seo_to_linkedin.py
+
+      - name: Commit LinkedIn state if changed
+        run: |
+          git config user.name "sedifex-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add _social
+          if git diff --cached --quiet; then
+            echo "No LinkedIn state changed."
+            exit 0
+          fi
+          git commit -m "chore(blog): update LinkedIn post state"
+          git push
