@@ -81,11 +81,16 @@ def find_today_seo_caption(today_iso: str) -> Path | None:
 
 
 def blog_url_for_post(post_path: Path, blog_base_url: str) -> str:
+    base = blog_base_url.rstrip("/")
+    permalink = read_front_matter_value(post_path, "permalink")
+    if permalink:
+      return f"{base}/{permalink.lstrip('/')}"
+
     match = re.match(r"^(\d{4})-(\d{2})-(\d{2})-(.+)\.md$", post_path.name)
     if not match:
-        return blog_base_url.rstrip("/")
+        return base
     year, month, day, slug = match.groups()
-    return f"{blog_base_url.rstrip('/')}/{year}/{month}/{day}/{slug}.html"
+    return f"{base}/{year}/{month}/{day}/{slug}.html"
 
 
 def build_commentary(caption_path: Path, post_url: str) -> str:
