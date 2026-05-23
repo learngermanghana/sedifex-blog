@@ -1,0 +1,39 @@
+name: Weekly AI SEO Article
+
+on:
+  schedule:
+    - cron: '30 8 * * 1,4' # Monday and Thursday at 08:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish-seo-article:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate AI SEO article
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL || 'gpt-4.1-mini' }}
+        run: python scripts/auto_publish_seo_article.py --allow-fallback
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "sedifex-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add _posts _social
+          if git diff --cached --quiet; then
+            echo "No AI SEO article was generated."
+            exit 0
+          fi
+          git commit -m "chore(blog): auto-publish AI SEO article"
+          git push
