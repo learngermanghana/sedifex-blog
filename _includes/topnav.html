@@ -1,6 +1,9 @@
 <div class="wrap topnav-container">
   <div class="topnav-logo">
-    <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <a href="{{ '/' | relative_url }}" aria-label="Sedifex Blog home">
+      <span class="logo-mark">S</span>
+      <span>{{ site.title }}</span>
+    </a>
   </div>
   <button class="topnav-toggle" aria-expanded="false" aria-label="Menu">&#9776;</button>
   <nav class="topnav" aria-label="Main navigation">
@@ -8,23 +11,23 @@
       <li class="{% if page.url == '/' %}active{% endif %}">
         <a href="{{ '/' | relative_url }}">Home</a>
       </li>
-      <li class="{% if page.url == '/about/' %}active{% endif %}">
-        <a href="{{ '/about/' | relative_url }}">About</a>
+      <li class="{% if page.url == '/blogs/' %}active{% endif %}">
+        <a href="{{ '/blogs/' | relative_url }}">Articles</a>
       </li>
       <li class="{% if page.url == '/search/' %}active{% endif %}">
         <a href="{{ '/search/' | relative_url }}">Search</a>
       </li>
-      <li class="{% if page.url == '/blogs/' %}active{% endif %}">
-        <a href="{{ '/blogs/' | relative_url }}">Blogs</a>
-      </li>
-      <li class="{% if page.url == '/contact/' %}active{% endif %}">
-        <a href="{{ '/contact/' | relative_url }}">Contact</a>
+      <li>
+        <a href="https://www.sedifexmarket.com" target="_blank" rel="noopener">Market</a>
       </li>
       <li>
-        <a href="https://www.sedifex.com" target="_blank" rel="noopener">Register</a>
+        <a href="https://pay.sedifex.com" target="_blank" rel="noopener">Pay</a>
       </li>
       <li>
-        <button id="theme-toggle" type="button">Dark Mode</button>
+        <a class="nav-cta" href="https://www.sedifex.com" target="_blank" rel="noopener">Start selling</a>
+      </li>
+      <li>
+        <button id="theme-toggle" type="button">Dark</button>
       </li>
     </ul>
   </nav>
