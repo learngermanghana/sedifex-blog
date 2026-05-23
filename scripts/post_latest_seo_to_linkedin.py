@@ -39,6 +39,21 @@ def linkedin_url_for_post(post_id: str) -> str:
     return f"https://www.linkedin.com/feed/update/{post_id}/"
 
 
+def normalize_author_urn(value: str) -> str:
+    cleaned = value.strip().strip('"').strip("'")
+    if not cleaned:
+        return ""
+    if cleaned.startswith("urn:"):
+        return cleaned
+    if cleaned.startswith("li:person:"):
+        return f"urn:{cleaned}"
+    if cleaned.startswith("person:"):
+        return f"urn:li:{cleaned}"
+    if cleaned.startswith("organization:"):
+        return f"urn:li:{cleaned}"
+    return f"urn:li:person:{cleaned}"
+
+
 def read_front_matter_value(post_path: Path, key: str) -> str:
     try:
         content = post_path.read_text(encoding="utf-8", errors="ignore")
@@ -82,13 +97,15 @@ def build_commentary(caption_path: Path, post_url: str) -> str:
 
 def post_to_linkedin(commentary: str) -> str:
     token = os.environ.get("LINKEDIN_ACCESS_TOKEN", "").strip()
-    author = os.environ.get("LINKEDIN_AUTHOR_URN", "").strip()
+    author = normalize_author_urn(os.environ.get("LINKEDIN_AUTHOR_URN", ""))
     version = os.environ.get("LINKEDIN_VERSION", DEFAULT_LINKEDIN_VERSION).strip()
 
     if not token:
         raise RuntimeError("LINKEDIN_ACCESS_TOKEN is not configured")
     if not author:
         raise RuntimeError("LINKEDIN_AUTHOR_URN is not configured")
+
+    print(f"Using LinkedIn author type: {'organization' if ':organization:' in author else 'person'}")
 
     payload = {
         "author": author,
