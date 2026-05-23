@@ -2,6 +2,7 @@
 layout: post
 title: "How Small Businesses in Ghana Can Sell Online with Sedifex Market"
 date: 2026-05-23
+permalink: /2026/05/23/seo-how-small-businesses-in-ghana-can-sell-online-with-sedifex-market.html
 categories: [Sedifex Market, Seller Education]
 tags: [sedifex market, small business ghana, online payments, inventory management, seller education]
 excerpt: "Learn how small businesses in Ghana can use Sedifex Market, Pay Sedifex, and Sedifex business tools to sell online, receive payments, issue receipts, and manage inventory from one place."
