@@ -14,7 +14,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 POSTS_DIR = ROOT / "_posts"
 
-RSS_FEED_URL = "https://www.sedifexmarket.com/api/feeds/google-merchant-rss"
+GOOGLE_MERCHANT_FEED_URL = "https://www.sedifexmarket.com/api/google-merchant-feed.xml"
 DEFAULT_IMAGE_URL = (
     "https://storage.googleapis.com/sedifeximage/stores/vrwe9dieCqchfhxqMc3UiaU2qSJ3/"
     "products/draft-ed9225c8-42d0-4be9-afe4-f3342367bea2-1.jpg?v=1776178401704"
@@ -54,7 +54,7 @@ def parse_feed(feed_url: str) -> list[dict[str, str]]:
     req = urllib.request.Request(
         feed_url,
         headers={
-            "User-Agent": "sedifex-blog-auto-publisher/1.0",
+            "User-Agent": "sedifex-blog-auto-publisher/1.1",
             "Accept": "application/rss+xml, application/xml;q=0.9, */*;q=0.8",
         },
     )
@@ -70,19 +70,31 @@ def parse_feed(feed_url: str) -> list[dict[str, str]]:
     ns_g = "{http://base.google.com/ns/1.0}"
 
     for item in channel.findall("item"):
-        title = first_non_empty(xml_text(item, "title"), "Featured product")
+        title = first_non_empty(
+            xml_text(item, f"{ns_g}title"),
+            xml_text(item, "title"),
+            "Featured product",
+        )
         product_id = first_non_empty(
             xml_text(item, f"{ns_g}id"),
             xml_text(item, "guid"),
             slugify(title),
         )
-        product_link = first_non_empty(xml_text(item, "link"), "https://www.sedifexmarket.com")
-        description = first_non_empty(xml_text(item, f"{ns_g}description"), xml_text(item, "description"))
+        product_link = first_non_empty(
+            xml_text(item, f"{ns_g}link"),
+            xml_text(item, "link"),
+            "https://www.sedifexmarket.com",
+        )
+        description = first_non_empty(
+            xml_text(item, f"{ns_g}description"),
+            xml_text(item, "description"),
+        )
         image_link = first_non_empty(xml_text(item, f"{ns_g}image_link"))
         brand = first_non_empty(xml_text(item, f"{ns_g}brand"), "Sedifex Market")
         price = first_non_empty(xml_text(item, f"{ns_g}price"), "")
         condition = first_non_empty(xml_text(item, f"{ns_g}condition"), "")
         availability = first_non_empty(xml_text(item, f"{ns_g}availability"), "")
+        product_type = first_non_empty(xml_text(item, f"{ns_g}product_type"), "")
 
         products.append(
             {
@@ -96,6 +108,7 @@ def parse_feed(feed_url: str) -> list[dict[str, str]]:
                 "price": price,
                 "condition": condition,
                 "availability": availability,
+                "product_type": product_type,
             }
         )
 
@@ -183,7 +196,7 @@ def pick_product(products: list[dict[str, str]], used_ids: set[str], today: date
     return products[start_index]
 
 
-def build_post(today_iso: str, product: dict[str, str], fallback_image: str) -> str:
+def build_post(today_iso: str, product: dict[str, str], fallback_image: str, feed_url: str) -> str:
     product_image = product["image"] or fallback_image
     post_image = product_image
     inline_image = product_image
@@ -197,6 +210,10 @@ def build_post(today_iso: str, product: dict[str, str], fallback_image: str) -> 
         details.append(f"- **Price:** {product['price']}")
     if product["condition"]:
         details.append(f"- **Condition:** {product['condition']}")
+    if product["availability"]:
+        details.append(f"- **Availability:** {product['availability'].replace('_', ' ')}")
+    if product.get("product_type"):
+        details.append(f"- **Category:** {product['product_type']}")
 
     details_block = "\n".join(details) if details else "- Product details are available on the product page."
 
@@ -211,7 +228,7 @@ tags: [sedifex market, product spotlight, merchant promo, ecommerce]
 excerpt: "{escape_yaml(excerpt)}"
 image: {post_image}
 source_product_id: {escape_yaml(product['id'])}
-source_feed: {RSS_FEED_URL}
+source_feed: {feed_url}
 ---
 
 Today's featured pick from Sedifex Market is **{product['title']}**.
@@ -236,9 +253,9 @@ Sedifex Market helps merchants gain visibility by promoting one product every da
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Publish one daily product spotlight post from RSS")
+    parser = argparse.ArgumentParser(description="Publish one daily product spotlight post from Google Merchant XML")
     parser.add_argument("--dry-run", action="store_true", help="Show actions without writing files")
-    parser.add_argument("--feed-url", default=RSS_FEED_URL, help="RSS feed URL")
+    parser.add_argument("--feed-url", default=GOOGLE_MERCHANT_FEED_URL, help="Google Merchant XML feed URL")
     parser.add_argument("--fallback-image", default=DEFAULT_IMAGE_URL, help="Fallback image URL")
     args = parser.parse_args()
 
@@ -253,7 +270,7 @@ def main() -> int:
         return 0
 
     if not products:
-        print("No products found in RSS feed.")
+        print("No products found in Google Merchant feed.")
         return 0
 
     today_post = find_today_post(today_iso)
@@ -296,7 +313,7 @@ def main() -> int:
         print(f"Post already exists for today: {destination.relative_to(ROOT)}")
         return 0
 
-    content = build_post(today_iso, product, args.fallback_image)
+    content = build_post(today_iso, product, args.fallback_image, args.feed_url)
 
     print(f"Selected product: {product['title']} (id={product['id']})")
     print(f"Publishing to: {destination.relative_to(ROOT)}")
