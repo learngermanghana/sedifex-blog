@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 POSTS_DIR = ROOT / "_posts"
+SOCIAL_DIR = ROOT / "_social"
 
 GOOGLE_MERCHANT_FEED_URL = "https://www.sedifexmarket.com/api/google-merchant-feed.xml"
 DEFAULT_IMAGE_URL = (
@@ -54,7 +55,7 @@ def parse_feed(feed_url: str) -> list[dict[str, str]]:
     req = urllib.request.Request(
         feed_url,
         headers={
-            "User-Agent": "sedifex-blog-auto-publisher/1.1",
+            "User-Agent": "sedifex-blog-auto-publisher/1.2",
             "Accept": "application/rss+xml, application/xml;q=0.9, */*;q=0.8",
         },
     )
@@ -192,60 +193,104 @@ def pick_product(products: list[dict[str, str]], used_ids: set[str], today: date
         if product["id"] not in used_ids:
             return product
 
-    # If everything has been used, rotate anyway so posting can continue.
     return products[start_index]
 
 
-def build_post(today_iso: str, product: dict[str, str], fallback_image: str, feed_url: str) -> str:
+def natural_title(product: dict[str, str], today: date) -> str:
+    category = product.get("product_type") or "product"
+    title = product["title"]
+    options = [
+        f"Where to Buy {category} Online in Ghana: {title}",
+        f"Featured {category} Available on Sedifex Market Today",
+        f"How to Find {title} on Sedifex Market",
+        f"Sedifex Market Find: {title} for Online Shoppers in Ghana",
+    ]
+    return options[today.toordinal() % len(options)]
+
+
+def build_social_caption(product: dict[str, str]) -> str:
+    price_line = f"\nPrice: {product['price']}" if product.get("price") else ""
+    return dedent(
+        f"""\
+        New product spotlight on Sedifex Market 🛒
+
+        Featured item: {product['title']}{price_line}
+
+        Shop online, pay fast, and get your receipt instantly after checkout.
+
+        Search Sedifex Market on Google or DM SHOP for the link.
+        """
+    ).strip() + "\n"
+
+
+def write_social_caption(today_iso: str, slug: str, product: dict[str, str], dry_run: bool) -> None:
+    destination = SOCIAL_DIR / f"{today_iso}-daily-product-{slug}.txt"
+    print(f"Social caption: {destination.relative_to(ROOT)}")
+    if dry_run:
+        return
+    SOCIAL_DIR.mkdir(parents=True, exist_ok=True)
+    destination.write_text(build_social_caption(product), encoding="utf-8")
+
+
+def build_post(today_iso: str, product: dict[str, str], fallback_image: str, feed_url: str, today: date) -> str:
     product_image = product["image"] or fallback_image
-    post_image = product_image
-    inline_image = product_image
+    post_title = natural_title(product, today)
     excerpt_base = product["description"] or f"Discover {product['title']} on Sedifex Market."
-    excerpt = squash_whitespace(excerpt_base)[:160]
+    excerpt = squash_whitespace(excerpt_base)[:180]
 
     details = []
-    if product["brand"]:
-        details.append(f"- **Brand:** {product['brand']}")
+    details.append(f"- **Product name:** {product['title']}")
     if product["price"]:
         details.append(f"- **Price:** {product['price']}")
-    if product["condition"]:
-        details.append(f"- **Condition:** {product['condition']}")
+    if product["brand"]:
+        details.append(f"- **Store/brand:** {product['brand']}")
     if product["availability"]:
         details.append(f"- **Availability:** {product['availability'].replace('_', ' ')}")
     if product.get("product_type"):
         details.append(f"- **Category:** {product['product_type']}")
 
-    details_block = "\n".join(details) if details else "- Product details are available on the product page."
+    details_block = "\n".join(details)
 
     body = dedent(
         f"""\
 ---
 layout: post
-title: "Daily Product Spotlight: {escape_yaml(product['title'])}"
+title: "{escape_yaml(post_title)}"
 date: {today_iso}
-categories: [Marketing, Products]
-tags: [sedifex market, product spotlight, merchant promo, ecommerce]
+categories: [Sedifex Market, Product Spotlight]
+tags: [sedifex market, product spotlight, buyer guide, online shopping ghana]
 excerpt: "{escape_yaml(excerpt)}"
-image: {post_image}
+image: {product_image}
 source_product_id: {escape_yaml(product['id'])}
 source_feed: {feed_url}
 ---
 
-Today's featured pick from Sedifex Market is **{product['title']}**.
+If you are looking for products online in Ghana, today’s Sedifex Market spotlight is **{product['title']}**.
 
-{squash_whitespace(product['description']) or 'This product is now being promoted as part of our daily merchant spotlight series.'}
+{squash_whitespace(product['description']) or 'This product is currently listed on Sedifex Market and is part of our daily product spotlight series.'}
+
+## Product details
 
 {details_block}
 
-![{product['title']}]({inline_image})
+![{product['title']}]({product_image})
 
-## Why we are spotlighting this product
+## Why customers may like it
 
-Sedifex Market helps merchants gain visibility by promoting one product every day. This keeps the catalog fresh, helps shoppers discover new listings, and gives stores consistent exposure.
+This listing gives shoppers a simple way to discover products from connected businesses on Sedifex Market. Instead of waiting for long replies, customers can open the product page, check the details, and continue to checkout when ready.
+
+## How to buy on Sedifex Market
+
+1. Open the product link below.
+2. Review the product information and price.
+3. Continue to checkout when you are ready to buy.
+4. After successful payment, you receive a receipt and the business receives the order details.
 
 👉 View product: [{product['title']}]({product['link']})
 
 👉 Explore more products: [Sedifex Market](https://www.sedifexmarket.com)
+
+For Instagram, you can also search **Sedifex Market** on Google or DM **SHOP** for the link.
 """
     ).strip() + "\n"
 
@@ -313,16 +358,16 @@ def main() -> int:
         print(f"Post already exists for today: {destination.relative_to(ROOT)}")
         return 0
 
-    content = build_post(today_iso, product, args.fallback_image, args.feed_url)
+    content = build_post(today_iso, product, args.fallback_image, args.feed_url, today)
 
     print(f"Selected product: {product['title']} (id={product['id']})")
     print(f"Publishing to: {destination.relative_to(ROOT)}")
 
-    if args.dry_run:
-        return 0
+    if not args.dry_run:
+        POSTS_DIR.mkdir(parents=True, exist_ok=True)
+        destination.write_text(content, encoding="utf-8")
 
-    POSTS_DIR.mkdir(parents=True, exist_ok=True)
-    destination.write_text(content, encoding="utf-8")
+    write_social_caption(today_iso, slug, product, args.dry_run)
     print("Done.")
     return 0
 
