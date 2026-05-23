@@ -33,6 +33,12 @@ def save_state(state: dict[str, str]) -> None:
     POSTED_STATE.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def linkedin_url_for_post(post_id: str) -> str:
+    if not post_id:
+        return ""
+    return f"https://www.linkedin.com/feed/update/{post_id}/"
+
+
 def read_front_matter_value(post_path: Path, key: str) -> str:
     try:
         content = post_path.read_text(encoding="utf-8", errors="ignore")
@@ -79,9 +85,10 @@ def post_to_linkedin(commentary: str) -> str:
     author = os.environ.get("LINKEDIN_AUTHOR_URN", "").strip()
     version = os.environ.get("LINKEDIN_VERSION", DEFAULT_LINKEDIN_VERSION).strip()
 
-    if not token or not author:
-        print("LinkedIn secrets are not configured. Skipping LinkedIn post.")
-        return ""
+    if not token:
+        raise RuntimeError("LINKEDIN_ACCESS_TOKEN is not configured")
+    if not author:
+        raise RuntimeError("LINKEDIN_AUTHOR_URN is not configured")
 
     payload = {
         "author": author,
@@ -111,12 +118,14 @@ def post_to_linkedin(commentary: str) -> str:
     try:
         with urllib.request.urlopen(request, timeout=45) as response:
             post_id = response.headers.get("x-restli-id", "")
-            print(f"LinkedIn post created: {post_id or 'created'}")
+            if not post_id:
+                raise RuntimeError("LinkedIn returned success but no x-restli-id post ID header")
+            print(f"LinkedIn post created: {post_id}")
+            print(f"LinkedIn post URL: {linkedin_url_for_post(post_id)}")
             return post_id
     except urllib.error.HTTPError as exc:
         body = exc.read().decode("utf-8", errors="ignore")
-        print(f"LinkedIn post failed: HTTP {exc.code} {body}")
-        return ""
+        raise RuntimeError(f"LinkedIn post failed: HTTP {exc.code} {body}") from exc
 
 
 def main() -> int:
@@ -134,6 +143,7 @@ def main() -> int:
     state_key = f"linkedin::{caption_path.name}"
     if state.get(state_key):
         print(f"Already posted to LinkedIn: {caption_path.name}")
+        print(f"Saved LinkedIn post URL: {linkedin_url_for_post(state[state_key])}")
         return 0
 
     post_url = blog_url_for_post(post_path, blog_base_url)
@@ -145,11 +155,14 @@ def main() -> int:
         print("LINKEDIN_DRY_RUN enabled. Not posting.")
         return 0
 
-    post_id = post_to_linkedin(commentary)
-    if post_id:
-        state[state_key] = post_id
-        save_state(state)
+    try:
+        post_id = post_to_linkedin(commentary)
+    except Exception as exc:
+        print(str(exc))
+        return 1
 
+    state[state_key] = post_id
+    save_state(state)
     return 0
 
 
