@@ -4,7 +4,7 @@ This repository includes an automated publishing agent that creates one product 
 
 ## How it works
 
-- Source feed: `https://www.sedifexmarket.com/api/feeds/google-merchant-rss`
+- Source feed: `https://www.sedifexmarket.com/api/google-merchant-feed.xml`
 - Runner script: `scripts/auto_publish_post.py`
 - Published destination: `_posts/YYYY-MM-DD-<product-slug>.md`
 - Schedule: `.github/workflows/saturday-auto-post.yml` (daily at 08:00 UTC)
@@ -13,12 +13,12 @@ This repository includes an automated publishing agent that creates one product 
 
 On each run, the script:
 
-1. Reads products from the RSS feed.
+1. Reads approved Sedifex Market products from the Google Merchant XML feed.
 2. Picks one product for the day (rotating and avoiding products already posted when possible).
-3. Generates a Markdown blog post in `_posts` with marketing copy and product link.
-4. Includes the sample image as the post hero image and product image content.
+3. Generates a Markdown blog post in `_posts` with marketing copy and the product link.
+4. Uses the product image from the feed when available, otherwise uses the fallback image.
 
-If a post for the current date already exists, it exits without creating a duplicate.
+If a product post for the current date already exists, it exits without creating a duplicate.
 
 The blog no longer maintains a separate `/products/` landing page; publishing is focused on the daily post only.
 
@@ -36,6 +36,6 @@ python scripts/auto_publish_post.py --dry-run
 
 ```bash
 python scripts/auto_publish_post.py \
-  --feed-url "https://www.sedifexmarket.com/api/feeds/google-merchant-rss" \
+  --feed-url "https://www.sedifexmarket.com/api/google-merchant-feed.xml" \
   --fallback-image "https://storage.googleapis.com/.../sample.jpg"
 ```
