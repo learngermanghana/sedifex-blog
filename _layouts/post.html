@@ -14,10 +14,25 @@ layout: default
       {%- endif -%}
     </p>
   </header>
-  {% if page.image %}
+  {% assign hero_image = page.image %}
+  {% assign hero_alt = page.image_alt | default: page.title %}
+  {% unless hero_image %}
+    {% assign image_markup = content | split: '<img ' %}
+    {% if image_markup.size > 1 %}
+      {% assign image_src = image_markup[1] | split: 'src="' %}
+      {% if image_src.size > 1 %}
+        {% assign hero_image = image_src[1] | split: '"' | first %}
+      {% endif %}
+      {% assign image_alt = image_markup[1] | split: 'alt="' %}
+      {% if image_alt.size > 1 %}
+        {% assign hero_alt = image_alt[1] | split: '"' | first %}
+      {% endif %}
+    {% endif %}
+  {% endunless %}
+  {% if hero_image %}
     <img
-      src="{{ page.image }}"
-      alt="{{ page.image_alt | default: page.title }}"
+      src="{{ hero_image | escape }}"
+      alt="{{ hero_alt | strip_html | escape }}"
       width="{{ page.image_width | default: 600 }}"
       height="{{ page.image_height | default: 400 }}"
       loading="eager"

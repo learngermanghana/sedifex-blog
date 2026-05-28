@@ -129,6 +129,7 @@ p{color:var(--muted)}
 .post-img{display:block;width:100%;max-height:520px;object-fit:cover;border-radius:26px;margin:18px 0 28px;box-shadow:var(--shadow-soft)}
 .post-content{font-size:1.04rem;line-height:1.85;color:var(--muted)}
 .post-content p{margin:0 0 1.1rem;color:var(--muted)}
+.post-content img{display:block;width:100%;max-width:100%;height:auto;border-radius:18px;margin:1.5rem 0;box-shadow:var(--shadow-soft)}
 .post-content h2{margin:2.1rem 0 1rem;font-size:clamp(1.5rem,3vw,2.2rem)}
 .post-content h3{margin:1.7rem 0 .75rem}
 .post-content ul,.post-content ol{padding-left:1.3rem;color:var(--muted)}

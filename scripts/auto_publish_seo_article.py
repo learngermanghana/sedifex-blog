@@ -11,6 +11,7 @@ import random
 import re
 import sys
 from textwrap import dedent
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -21,6 +22,7 @@ SOCIAL_DIR = ROOT / "_social"
 GOOGLE_MERCHANT_FEED_URL = "https://www.sedifexmarket.com/api/google-merchant-feed.xml"
 OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
 DEFAULT_MODEL = "gpt-4.1-mini"
+FALLBACK_IMAGE_URL = "https://i.imgur.com/mcrrGfd.png"
 
 SEO_TOPICS = [
     {
@@ -84,7 +86,7 @@ def first_non_empty(*values: str | None) -> str:
     return ""
 
 
-def fetch_feed_products(feed_url: str, max_items: int = 12) -> list[dict[str, str]]:
+def fetch_feed_products(feed_url: str, max_items: int = 12) -> list[dict[str, object]]:
     req = urllib.request.Request(
         feed_url,
         headers={
@@ -101,18 +103,33 @@ def fetch_feed_products(feed_url: str, max_items: int = 12) -> list[dict[str, st
         return []
 
     ns_g = "{http://base.google.com/ns/1.0}"
-    products: list[dict[str, str]] = []
+    products: list[dict[str, object]] = []
     for item in channel.findall("item"):
         title = first_non_empty(xml_text(item, f"{ns_g}title"), xml_text(item, "title"))
         if not title:
             continue
+        image_link = first_non_empty(xml_text(item, f"{ns_g}image_link"), xml_text(item, "image_link"))
+        images = [
+            image
+            for image in [
+                image_link,
+                *(
+                    node.text.strip()
+                    for node in item.findall(f"{ns_g}additional_image_link")
+                    if node.text and node.text.strip()
+                ),
+            ]
+            if image
+        ]
         products.append(
             {
                 "id": first_non_empty(xml_text(item, f"{ns_g}id"), slugify(title)),
                 "title": title,
                 "description": first_non_empty(xml_text(item, f"{ns_g}description"), xml_text(item, "description")),
                 "link": first_non_empty(xml_text(item, f"{ns_g}link"), xml_text(item, "link"), "https://www.sedifexmarket.com"),
-                "image": first_non_empty(xml_text(item, f"{ns_g}image_link")),
+                "image_link": image_link,
+                "image": image_link,
+                "images": images,
                 "brand": first_non_empty(xml_text(item, f"{ns_g}brand"), "Sedifex Market"),
                 "price": first_non_empty(xml_text(item, f"{ns_g}price")),
                 "category": first_non_empty(xml_text(item, f"{ns_g}product_type")),
@@ -137,6 +154,40 @@ def escape_yaml(text: str) -> str:
     return text.replace('"', '\\"')
 
 
+def is_valid_image_url(value: object) -> bool:
+    if not isinstance(value, str):
+        return False
+    parsed = urllib.parse.urlparse(value.strip())
+    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
+def first_valid_image(product: dict[str, object]) -> str:
+    for key in ("image_link", "image"):
+        value = product.get(key)
+        if is_valid_image_url(value):
+            return str(value).strip()
+
+    images = product.get("images")
+    if isinstance(images, list) and images and is_valid_image_url(images[0]):
+        return str(images[0]).strip()
+
+    if isinstance(images, list):
+        for image in images[1:]:
+            if is_valid_image_url(image):
+                return str(image).strip()
+
+    return ""
+
+
+def select_featured_image(products: list[dict[str, object]]) -> tuple[str, str]:
+    for product in products:
+        image = first_valid_image(product)
+        if image:
+            title = squash_whitespace(str(product.get("title", ""))) or "Sedifex Market product"
+            return image, title
+    return FALLBACK_IMAGE_URL, "Sedifex logo"
+
+
 def clean_markdown_body(body: str) -> str:
     body = body.strip()
     if body.startswith("---"):
@@ -150,7 +201,7 @@ def choose_topic(today: date) -> dict[str, str]:
     return SEO_TOPICS[today.toordinal() % len(SEO_TOPICS)]
 
 
-def build_prompt(topic: dict[str, str], products: list[dict[str, str]], today_iso: str) -> list[dict[str, str]]:
+def build_prompt(topic: dict[str, str], products: list[dict[str, object]], today_iso: str) -> list[dict[str, str]]:
     product_context = products[:8]
     system = (
         "You are a Ghana-focused SEO blog writer for Sedifex and Sedifex Market. "
@@ -264,24 +315,24 @@ def fallback_article(topic: dict[str, str], products: list[dict[str, str]], toda
     }
 
 
-def build_post(today_iso: str, article: dict[str, str], model: str, feed_url: str) -> str:
-    return dedent(
-        f"""\
-        ---
-        layout: post
-        title: "{escape_yaml(article['title'])}"
-        date: {today_iso}
-        categories: [Sedifex, Business Automation]
-        tags: [sedifex, sedifex market, online payments, inventory management, ghana business]
-        excerpt: "{escape_yaml(article['excerpt'][:220])}"
-        source_agent: sedifex-ai-seo-agent
-        source_feed: {feed_url}
-        ai_model: {model}
-        ---
-
-        {article['body_markdown']}
-        """
-    ).strip() + "\n"
+def build_post(today_iso: str, article: dict[str, str], model: str, feed_url: str, image: str, image_alt: str) -> str:
+    body = clean_markdown_body(article["body_markdown"])
+    frontmatter = [
+        "---",
+        "layout: post",
+        f"title: \"{escape_yaml(article['title'])}\"",
+        f"date: {today_iso}",
+        "categories: [Sedifex, Business Automation]",
+        "tags: [sedifex, sedifex market, online payments, inventory management, ghana business]",
+        f"excerpt: \"{escape_yaml(article['excerpt'][:220])}\"",
+        f"image: \"{escape_yaml(image)}\"",
+        f"image_alt: \"{escape_yaml(image_alt)}\"",
+        "source_agent: sedifex-ai-seo-agent",
+        f"source_feed: {feed_url}",
+        f"ai_model: {model}",
+        "---",
+    ]
+    return "\n".join(frontmatter) + "\n\n" + body + "\n"
 
 
 def write_social_caption(today_iso: str, slug: str, caption: str, dry_run: bool) -> None:
@@ -317,15 +368,16 @@ def main() -> int:
 
     topic = choose_topic(today)
     random.shuffle(products)
+    selected_products = products[:8]
 
     try:
-        article = call_openai(build_prompt(topic, products, today_iso), args.model)
+        article = call_openai(build_prompt(topic, selected_products, today_iso), args.model)
     except Exception as exc:
         print(f"AI article generation failed: {exc}")
         if not args.allow_fallback:
             print("Skipping publish. Add --allow-fallback to publish a template article when AI fails.")
             return 0
-        article = fallback_article(topic, products, today_iso)
+        article = fallback_article(topic, selected_products, today_iso)
 
     slug = slugify(article.get("slug") or article["title"])
     destination = POSTS_DIR / f"{today_iso}-seo-{slug}.md"
@@ -333,9 +385,11 @@ def main() -> int:
         print(f"Destination already exists: {destination.relative_to(ROOT)}")
         return 0
 
-    content = build_post(today_iso, article, args.model, args.feed_url)
+    image, image_alt = select_featured_image(selected_products)
+    content = build_post(today_iso, article, args.model, args.feed_url, image, image_alt)
 
     print(f"Selected SEO topic: {topic['title_hint']}")
+    print(f"Selected featured image: {image}")
     print(f"Publishing to: {destination.relative_to(ROOT)}")
 
     if not args.dry_run:
