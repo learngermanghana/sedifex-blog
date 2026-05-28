@@ -16,8 +16,8 @@ layout: default
   </header>
   {% if page.image %}
     <img
-      src="{{ page.image }}"
-      alt="{{ page.image_alt | default: page.title }}"
+      src="{{ page.image | escape }}"
+      alt="{{ page.image_alt | default: page.title | strip_html | escape }}"
       width="{{ page.image_width | default: 600 }}"
       height="{{ page.image_height | default: 400 }}"
       loading="eager"
