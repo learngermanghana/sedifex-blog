@@ -325,7 +325,7 @@ def build_post(today_iso: str, article: dict[str, str], model: str, feed_url: st
         "categories: [Sedifex, Business Automation]",
         "tags: [sedifex, sedifex market, online payments, inventory management, ghana business]",
         f"excerpt: \"{escape_yaml(article['excerpt'][:220])}\"",
-        f"image: \"{escape_yaml(image)}\"",
+        f"image: {image}",
         f"image_alt: \"{escape_yaml(image_alt)}\"",
         "source_agent: sedifex-ai-seo-agent",
         f"source_feed: {feed_url}",

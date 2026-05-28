@@ -31,8 +31,8 @@ layout: default
   {% endunless %}
   {% if hero_image %}
     <img
-      src="{{ hero_image | escape }}"
-      alt="{{ hero_alt | strip_html | escape }}"
+      src="{{ page.image | escape }}"
+      alt="{{ page.image_alt | default: page.title | strip_html | escape }}"
       width="{{ page.image_width | default: 600 }}"
       height="{{ page.image_height | default: 400 }}"
       loading="eager"
