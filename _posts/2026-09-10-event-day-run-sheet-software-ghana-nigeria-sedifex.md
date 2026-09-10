@@ -5,6 +5,8 @@ date: 2026-09-10
 tags: [sedifex, event-management, event-day, run-sheet, event-planning, ghana, nigeria]
 categories: [Business, Events]
 excerpt: "A practical guide for event companies in Ghana and Nigeria on using Sedifex run sheets, Event Day Mode, readiness checks, client collaboration and reusable event workflows."
+image: "https://images.unsplash.com/photo-1573167507387-6b4b98cb7c13?auto=format&fit=crop&w=1600&q=80"
+image_alt: "Business team coordinating work around a conference table"
 ---
 
 ## Why growing event companies need an operational run sheet
@@ -99,3 +101,7 @@ For growing event companies in Ghana and Nigeria, that creates a stronger founda
 
 **Explore Sedifex Event Management:** [sedifex.com/event-management-software](https://sedifex.com/event-management-software)  
 **Explore Sedifex:** [sedifex.com](https://sedifex.com)
+
+---
+
+*Featured photo by [Christina @ wocintechchat.com](https://unsplash.com/@wocintechchat) on [Unsplash](https://unsplash.com/photos/people-on-conference-table-looking-at-talking-woman-Q80LYxv_Tbs). Free to use under the Unsplash License.*
